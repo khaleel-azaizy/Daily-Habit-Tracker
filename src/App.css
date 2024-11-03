@@ -48,7 +48,10 @@ main {
  
   margin: 40px auto;
 }
-.home h2{
+.home{
+  margin: 10px;
+}
+.home .title{
   text-align: center;
 }
 .home button{
@@ -77,7 +80,7 @@ main {
   justify-content: center;
   margin: 200px auto ;
   font-family: 'roboto', sans-serif;
-  background-color: var(--theme);
+  background-color: #1d7aa97d;
   border: none;
   border-radius: 10px;
 
@@ -110,27 +113,28 @@ main {
   font: 1.5em sans-serif;
   font-weight: 600;
   display: block;
-  color:#000000;
+  color:var(--primary);
   border: none;
   border-radius: 6px;
-  transition: 0.2s;
+  transition: 0.4s;
   width: 30%;
   height: 40px;
 
 }
 .login button:hover{
-  background-color:  #3f8ac8;
+  background-color:  #3f8ac8a4;
   color: #ffffff;
 
 }
 .regestir-her{
   display: flex;
   gap:10px;
-  margin: 5px;
+  margin: 10px;
 }
 .regestir-her :Link{
   text-decoration: none;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .login-her{
@@ -140,7 +144,9 @@ main {
 }
 .login-her :Link{
   text-decoration: none;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 700;
+
 }
 
 body.active-modal {
@@ -167,7 +173,7 @@ body.active-modal {
   left: 50%;
   z-index: 999;
   transform: translate(-50%, -50%);
-  background:#48a8e4;
+  background:#105b8a;
   padding: 14px 28px;
   border-radius: 8px;
   max-width: 600px;
@@ -176,15 +182,63 @@ body.active-modal {
   
 }
 .modal-content input{
+  margin-top: 15px;
   width: 100%;
   height: 25px;
 }
-.close-modal{
-  background-color: #ddd;
+.modal-button ,.close-modal ,.submit-modal{
+  background:#105b8a;
   color: #ffffff;
   font-weight: 700;
-display: block
-;}
+  display: flex;
+  gap: 10px;
+  
+}
 .close-modal:hover{
   background: #ddd;
+}
+.home-container {
+  display: flex; 
+  gap: 20px; 
+}
+.all-events{
+  flex: 1; 
+  max-width: 300px; 
+  overflow-y: auto; 
+  border-right: 1px solid #ddd;
+  background-color: #082c4a67;
+  border-radius: 15px;
+  padding: 10px;
+}
+.all-events h2{
+text-align: center;
+margin-bottom: 20px;
+
+}
+.calendar-container {
+  flex: 3; 
+  padding: 10px; 
+}
+
+
+.event-preview {
+  border: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #cadff7fc;
+}
+
+.event-preview h3 {
+  margin: 0;
+  
+}
+.event-preview h4 {
+  margin-right: 0;
+ 
+}
+.event-details{
+  display: flex;
+  justify-content: space-between;
+  width: 100%; 
 }
