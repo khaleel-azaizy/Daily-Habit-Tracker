@@ -11,9 +11,10 @@ export default function Home() {
   const [selectedDateInfo, setSelectedDateInfo] = useState(null); 
   const [events, setEvents] = useState([]);
   const [upcomingEvents,setUpcomingevents]=useState([]);
-
+  const storedUserId = localStorage.getItem('userId');
   useEffect(() => {
-    fetch('http://localhost:4000/get-events') 
+    
+    fetch(`http://localhost:4000/get-events/${storedUserId}`) 
       .then((response) => response.json())
       .then((data) => {
         const sortedEvents = data.sort((a, b) => new Date(a.start) - new Date(b.start));
@@ -24,6 +25,21 @@ export default function Home() {
         console.error('Error fetching events:', error);
       });
   }, []);
+  
+
+
+  const fetchEvents =() => {
+    fetch(`http://localhost:4000/get-events/${storedUserId}`) 
+      .then((response) => response.json())
+      .then((data) => {
+        const sortedEvents = data.sort((a, b) => new Date(a.start) - new Date(b.start));
+        setEvents(sortedEvents);
+        
+      })
+      .catch((error) => {
+        console.error('Error fetching events:', error);
+      });
+  };
  
   useEffect(() => {
     const currentDate = new Date();
@@ -56,13 +72,12 @@ export default function Home() {
     };
   
       calendarApi.addEvent(newEvent);
-
-      fetch('http://localhost:4000/add-event',{
+      console.log(storedUserId)
+      fetch(`http://localhost:4000/add-event/${storedUserId}`,{
         method:'post',
         headers:{"Content-Type": "application/json"},
         body:JSON.stringify(newEvent)
      }).then(()=>{
-        console.log('new event added');
         setEvents((prevEvents) => [...prevEvents, newEvent]);
         
      })
@@ -76,7 +91,7 @@ export default function Home() {
     if (window.confirm("Are you sure you want to delete this event?")) {
       const eventId = eventClick.event.id;
 
-      fetch(`http://localhost:4000/delete-event/${eventId}`, {
+      fetch(`http://localhost:4000/delete-event/${storedUserId}/${eventId}`, {
         method: 'DELETE',
         headers: { "Content-Type": "application/json" },
         body:JSON.stringify(eventClick.event)
@@ -86,6 +101,7 @@ export default function Home() {
         console.error('Error deleting event:', err);
       });
       eventClick.event.remove();
+      fetchEvents();
   };
   
   }
@@ -100,7 +116,7 @@ export default function Home() {
       allDay: info.event.allDay,
     };
 
-    fetch(`http://localhost:4000/update-event/${info.event.id}`, {
+    fetch(`http://localhost:4000/update-event/${storedUserId}/${info.event.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -110,6 +126,7 @@ export default function Home() {
       .then((response) => {
         if (response.ok) {
           console.log('Event updated successfully');
+          fetchEvents();
           
         } else {
           console.error('Failed to update event');

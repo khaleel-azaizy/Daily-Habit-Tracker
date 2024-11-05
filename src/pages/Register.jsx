@@ -28,7 +28,7 @@ export default function Register(){
         }).then(data => {
            
             login(); 
-            navigate('/'); 
+            navigate('/home'); 
         })
          .catch(err =>{
             console.error(err);

@@ -1,38 +1,51 @@
 import { useState } from "react";
 import { useNavigate,Link  } from "react-router-dom";
 import {useAuth } from "../components/AuthProvider"
+
+
+
 export default function Login(){
     const [email,setEmail]= useState('');
     const [password,setPassword]= useState('');
     const navigate = useNavigate();
     const { login } = useAuth();
     const [error, setError] = useState(''); 
+    
 
-    const handleSubmit=(e)=>{
+    const handleSubmit =  (e) => {
         e.preventDefault();
-        const user = {email,password};
-        fetch('http://localhost:4000/login',{
-            method:'post', 
-            headers:{"Content-Type": "application/json"},
-            body:JSON.stringify(user)
-        }).then(response => {
-            if (response.ok) {
-                console.log('Login successful');
-                return response.json();  
-            } else {
-                throw new Error('email or password is incorrect');
-            }
-        }).then(data => {
+        try {
+            const user = {email,password};
+         fetch('http://localhost:4000/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(user),
+          })
+          .then((response) => {
            
+            return response.json();
+          })
+        
+          .then((data) => {
+            const userId = data.userid;
+            localStorage.setItem('userId', userId);
+            console.log('User logged in successfully',userId);
             login(); 
             navigate('/home'); 
-        })
-         .catch(err =>{
-            console.error(err);
-            setError(err.message);
+          })
 
-         })
-    }
+           
+          
+        } catch (error) {
+          console.error('Error during login:', error);
+          setError(error.message);
+
+        }
+      };
+
+    
     
     return(
         <div className="login">

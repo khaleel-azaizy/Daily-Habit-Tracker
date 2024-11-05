@@ -3,6 +3,7 @@ const { getDb, connectToDb } = require('./db')
 const cors = require('cors');
 const { ObjectId } = require('mongodb')
 
+
 // init app & middleware
 const app = express()
 app.use(express.json())
@@ -24,15 +25,14 @@ connectToDb((err) => {
 app.post('/login', (req, res) => {
   const User = req.body;
   
-  console.log('Received login request with:',  User); 
-
   db.collection('Users').findOne(User)
   .then(doc =>{
     if(User.email===doc.email&&User.password===doc.password){   
-     console.log('ok'); 
-      res.status(200).json(doc)
+      const id = doc._id.toString();
+      console.log(id)
+      res.status(200).send({userid:id})
     } else{
-    res.json(500)
+      res.status(500).json({error: 'email or password are incorrect'})
     }
   }) 
   .catch(err => {
@@ -43,8 +43,7 @@ app.post('/login', (req, res) => {
    
   app.post('/register', (req, res) => {
     const User = req.body;
-    
-    console.log('Received login request with:',  User); 
+     
     db.collection('Users').findOne(User)
     .then(doc =>{
       if(doc){   
@@ -59,42 +58,44 @@ app.post('/login', (req, res) => {
     })
 
     });
-     
-    app.post('/add-event',(req,res) =>{
-      const Event = req.body;
-      console.log('Received event request with:',  Event); 
-      db.collection('UserEvents').insertOne(Event)
-      .then(doc =>{
-        if(doc){   
-          res.status(200).json(doc)
-        } else{
-          res.json(500)
-        }
-       })
-       .catch(err => {
-        res.status(500).json({error: 'Could not fetch the document'})
-      })
 
-
-    })
-  
-    app.get('/get-events', async (req, res) => {
+    
+    app.post('/add-event/:userId', async (req, res) => {
       try {
-       
-        const events = await db.collection('UserEvents').find().toArray(); 
-        
-        res.status(200).json(events); 
+        const userId = req.params.userId;
+        const eventData = req.body;
+        await db.collection('Users').updateOne(
+          { _id: new ObjectId(userId) },
+          { $push: { events: { eventId: new ObjectId(), ...eventData } } }
+        );
+    
+        res.status(200).send({ message: 'Event added successfully' });
+      } catch (error) {
+        console.error('Error adding event:', error);
+        res.status(500).send({ error: 'Failed to add event' });
+      }
+    });
+
+    
+  
+    app.get('/get-events/:userid', async (req, res) => {
+      try {
+        const userId = req.params.userid;
+        const user = await db.collection('Users').findOne( { _id: new ObjectId(userId)  });
+        res.status(200).json(user.events); 
       } catch (error) {
         console.error('Error fetching events:', error);
         res.status(500).json({ error: 'Failed to fetch events' });
       }
     });
 
-    app.delete('/delete-event/:id', (req, res) => {
+    app.delete('/delete-event/:userid/:id', (req, res) => {
       const event = req.body;
+      const userId = req.params.userid;
       const eventId = req.params.id;
       console.log('Received delete event request with:',  event); 
-      db.collection('UserEvents').deleteOne({ id: eventId })
+      db.collection('Users').updateOne({ _id: new ObjectId(userId) },
+       { $pull: { events: { id: eventId } } })
         .then(() => {
           res.status(200).send({ message: 'Event deleted successfully' });
         })
@@ -103,9 +104,10 @@ app.post('/login', (req, res) => {
         });
     });
 
-    app.put('/update-event/:id', async (req, res) => {
+    app.put('/update-event/:userid/:id', async (req, res) => {
       try {
         const eventId = req.params.id;
+        const userId = req.params.userid;
         const updatedData = req.body;
         
         console.log('Received updated data:',updatedData)
@@ -113,15 +115,14 @@ app.post('/login', (req, res) => {
           return res.status(400).send({ error: 'Missing required fields' });
         }
         
-        const result = await db.collection('UserEvents').updateOne(
-          { id: eventId },
-          {
+        const result = await db.collection('Users').updateOne(
+          { _id: new ObjectId(userId), "events.id": eventId },
+          { 
             $set: {
-              title: updatedData.title,
-              start: updatedData.start,
-              end: updatedData.end,
-              allDay: updatedData.allDay,
-            },
+              "events.$.title": updatedData.title,
+              "events.$.start": updatedData.start,
+              "events.$.end": updatedData.end,
+            } 
           }
         );
         
