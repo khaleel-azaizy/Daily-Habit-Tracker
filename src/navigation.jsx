@@ -14,7 +14,7 @@ return(
             <h1>Daily Habits</h1>
             <NavLink to="/home">Calendar</NavLink>
             <NavLink to="/personal-habits">User Habits</NavLink>
-            <button onClick={logout}>LogOut</button>
+            <button className={"logout"} onClick={logout}>LogOut</button>
             </nav>
         
         </header>

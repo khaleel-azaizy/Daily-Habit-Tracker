@@ -14,7 +14,7 @@ export default function Login(){
 
     const handleSubmit =  (e) => {
         e.preventDefault();
-        try {
+        
             const user = {email,password};
          fetch('http://localhost:4000/login', {
             method: 'POST',
@@ -24,8 +24,11 @@ export default function Login(){
             body: JSON.stringify(user),
           })
           .then((response) => {
-           
-            return response.json();
+            if(!response.ok){
+                throw new Error("email or password are incorrect");
+                
+            }
+           return response.json()
           })
         
           .then((data) => {
@@ -38,11 +41,11 @@ export default function Login(){
 
            
           
-        } catch (error) {
+         .catch ((error)=> {
           console.error('Error during login:', error);
           setError(error.message);
 
-        }
+         })
       };
 
     

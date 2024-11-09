@@ -1,7 +1,7 @@
 :root {
   --primary: #082c4a;
   --secondary: #bcd1e6;
-  --theme: #1d7aa9;
+  --theme: #2b6f91;
 
 }
 body {
@@ -163,7 +163,7 @@ body.active-modal {
   left: 50%;
   z-index: 999;
   transform: translate(-50%, -50%);
-  background:#105b8a;
+  background:var(--theme);
   padding: 14px 28px;
   border-radius: 8px;
   max-width: 600px;
@@ -176,16 +176,28 @@ body.active-modal {
   width: 100%;
   height: 25px;
 }
+.modal-content h2{
+  text-align: center;
+  margin-right: 20px;
+}
 .modal-button ,.close-modal ,.submit-modal{
-  background:#105b8a;
-  color: #ffffff;
-  font-weight: 700;
   display: flex;
-  gap: 10px;
   
 }
-.close-modal:hover{
-  background: #ddd;
+.close-modal ,.submit-modal{
+  background:var(--primary);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 750;
+  display: flex;
+  padding: 15px;
+  margin: 15px 45px;
+  border: none;
+  border-radius: 6px;
+  transition: 0.4s;
+}
+.close-modal:hover,.submit-modal:hover{
+  background: #2b557e;
 }
 .home-container {
   display: flex; 
@@ -232,19 +244,19 @@ margin-bottom: 20px;
   justify-content: space-between;
   width: 100%; 
 }
-.navigation button{
+.navigation .logout{
   font-size: 17px;
   font-family: "Poppins";
   transition: 0.3s;
-  background:#0000008f ;
+  background:#00000073 ;
   border: none;
-  color: #ffffff;
+  color: #000000;
   margin-top: -5px;
   border-radius: 20px;
   font-weight: 500;
   margin-left: 40px;
 }
-.navigation button:hover{
-  background:#000000;
-
+.navigation .logout:hover{
+  background:#000000f3;
+  color: #ffffff;
 }
