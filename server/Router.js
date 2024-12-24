@@ -137,3 +137,57 @@ app.post('/login', (req, res) => {
         res.status(500).send({ error: 'Failed to update event', details: error.message });
       }
     });
+
+    app.get('/get-notes/:userid', async (req, res) => {
+      try {
+        const userId = req.params.userid;
+        const user = await db.collection('Users').findOne( { _id: new ObjectId(userId)  });
+        res.status(200).json(user.notes); 
+      } catch (error) {
+        console.error('Error fetching notes:', error);
+        res.status(500).json({ error: 'Failed to fetch notes' });
+      }
+    });
+
+    app.post('/add-note/:userId', async (req, res) => {
+      try {
+        const userId = req.params.userId;
+        const noteData = req.body; 
+        await db.collection('Users').updateOne(
+          { _id: new ObjectId(userId) },
+          { $push: { notes: { noteId: noteData.noteId, description: noteData.description } } }
+        );
+    
+        res.status(200).send({ message: 'note added successfully' });
+      } catch (error) {
+        console.error('Error adding notes:', error);
+        res.status(500).send({ error: 'Failed to add notes' });
+      }
+    });
+    app.delete('/delete-note/:userid/:noteid', async (req, res) => {
+      try {
+        const userId = req.params.userid;
+        const noteId = req.params.noteid;
+        
+        console.log('Received updated data:',noteId)
+      
+        const result = await db.collection('Users').updateOne(
+          { _id: new ObjectId(userId)},
+          { 
+            $pull: {
+            notes: {noteId: noteId}
+            } 
+          }
+        );
+        
+
+        if (result.modifiedCount === 0) {
+          return res.status(404).send({ error: 'Event not found' });
+        }
+    
+        res.status(200).send({ message: 'Event updated successfully' });
+      } catch (error) {
+        console.error('Error updating event:', error);
+        res.status(500).send({ error: 'Failed to update event', details: error.message });
+      }
+    });

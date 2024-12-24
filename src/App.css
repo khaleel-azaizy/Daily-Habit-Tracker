@@ -15,23 +15,34 @@ body {
   margin: 0;
   
 }
-header nav{
-  padding: 10px;
+
+.nav-links {
   display: flex;
-  gap: 16px;
-  justify-content: end;
-  margin: 20 auto;
-  border-radius: 8px;
+  flex-grow: 1; 
+  justify-content: space-between; 
+  flex-direction: column; 
+  align-items: center; 
+}
+.center-links {
+  display: flex;
+  gap: 20px; 
+  margin-top: 5px;
+  margin-bottom: 10px;
+  justify-content: center;
+  flex-grow: 1;
   
 }
-header nav h1 {
-  margin-right: auto;
-  border-bottom: 3px solid var(--theme);
+header h1 {
   font-size: 30px;
+  text-align: center;
+  flex-grow: 1;
+  margin-bottom: 10px;
 }
+
 header nav a{
   text-decoration: none;
   padding: 6px;
+  background: #4178a56e;
   border-radius: 4px;
   transition: 0.3s;
 }
@@ -46,8 +57,30 @@ header nav a.active:hover{
   color: var(--primary);
   background:  var(--theme);
 }
+.navigation .header{
+  display: flex;
+
+}
+.navigation .logout{
+  font-size: 17px;
+  position: absolute;
+  font-family: "Poppins";
+  transition: 0.3s;
+  background:#00000073 ;
+  border: none;
+  color: #000000;
+  padding: 5px;
+  border-radius: 20px;
+  font-weight: 500;
+  margin-right: 10px;
+  cursor: pointer;
+  right: 0;
+}
+.navigation .logout:hover{
+  background:#000000f3;
+  color: #ffffff;
+}
 main {
- 
   margin: 40px auto;
 }
 .home{
@@ -208,7 +241,7 @@ body.active-modal {
   max-width: 300px; 
   overflow-y: auto; 
   border-right: 1px solid #ddd;
-  background-color: #082c4a67;
+  background-color: #082c4a3f;
   border-radius: 15px;
   padding: 10px;
 }
@@ -221,7 +254,6 @@ margin-bottom: 20px;
   flex: 3; 
   padding: 10px; 
 }
-
 
 .event-preview {
   border: none;
@@ -243,20 +275,91 @@ margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
   width: 100%; 
+  
 }
-.navigation .logout{
-  font-size: 17px;
-  font-family: "Poppins";
-  transition: 0.3s;
-  background:#00000073 ;
+
+.user-tasks .note-content{
+ background-color:#2b6f9182;
+ width: 99%;
+ position: fixed;
+ padding: 13px;
+ border-radius: 8px;
+ border: 3px solid #ffffff6c;
+ display: flex;
+ position: fixed;
+ bottom: 0;
+ left: 0;
+ right: 0;
+ flex-grow: 1;
+
+}
+.user-tasks .note-content input{
+flex-grow: 15;
+height: 30px;
+border-radius: 9px;
+border: none;
+font-size:medium;
+}
+.user-tasks .note-content input::placeholder{
+  font-size: 15px;
+  font-weight: 600;
+  padding: 5px;
+  margin-left: 10px;
+
+}
+
+.user-tasks .note-content button{
+  flex-grow: 1;
+  padding: 8px;
+  width:70px ;
+  background-color: var(--theme);
   border: none;
-  color: #000000;
-  margin-top: -5px;
-  border-radius: 20px;
-  font-weight: 500;
-  margin-left: 40px;
+  border-radius: 9px;
+  font-size: 17px;
+  font-weight: 600;
+  margin-left: 5px;
+  transition: 0.3s;
 }
-.navigation .logout:hover{
-  background:#000000f3;
-  color: #ffffff;
+.user-tasks .note-content button:hover{
+  background-color: var(--primary);
+  color: white;
+
+}
+
+.user-tasks .all-notes{
+
+  max-width: 100%; 
+  min-height: 40rem;
+  overflow-y: auto; 
+  border-right: 1px solid #ddd;
+  background-color: #082c4a3f;
+  border-radius: 15px;
+  padding: 10px;
+  flex-wrap: wrap;
+}
+.user-tasks .all-notes .notes-preview{
+  border: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #cadff7fc;
+  transition: 0.3s;
+
+}
+.user-tasks .all-notes .notes-preview:hover{
+  background-color: #91c1f7;
+
+}
+.user-tasks .all-notes .notes-preview .note-details{
+  display: flex;
+  justify-content: space-between;
+  width: 100%; 
+  flex-wrap: wrap;
+}
+.user-tasks .all-notes .notes-preview .note-details h4 {
+  word-wrap: break-word; 
+  white-space: pre-wrap;
+  width: 100%; 
+  overflow-wrap: break-word; 
+  max-width: calc(100% - 80px);
 }

@@ -24,7 +24,7 @@ export default function Home() {
       .catch((error) => {
         console.error('Error fetching events:', error);
       });
-  }, []);
+  }, [modal]);
   
 
 

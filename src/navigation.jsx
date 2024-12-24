@@ -10,11 +10,19 @@ return(
     <div className="navigation">
         
         <header>
-            <nav>
+            <div className="header">
             <h1>Daily Habits</h1>
-            <NavLink to="/home">Calendar</NavLink>
-            <NavLink to="/personal-habits">User Habits</NavLink>
-            <button className={"logout"} onClick={logout}>LogOut</button>
+            <button className="logout" onClick={logout}>
+                LogOut
+            </button>
+            </div>
+        
+            <nav className="nav-links">
+            <div className="center-links">
+                <NavLink to="/home">Calendar</NavLink>
+                <NavLink to="/user-notes">User Notes</NavLink>
+            </div>
+            
             </nav>
         
         </header>

@@ -3,7 +3,7 @@ import { AuthProvider } from "./components/AuthProvider"
 import Navigation from "./navigation"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
-import PersonalHabits from "./pages/PersonalHabits"
+import UserNotes from "./pages/UserNotes"
 import ProtectedRoute from './components/ProtectedRoute';
 
 import './App.css'
@@ -20,7 +20,7 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />  
    
     <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />  
-    <Route path="/personal-habits" element={<ProtectedRoute><PersonalHabits /></ProtectedRoute>}/>
+    <Route path="/user-notes" element={<ProtectedRoute><UserNotes /></ProtectedRoute>}/>
     </Route>
     
   </>
