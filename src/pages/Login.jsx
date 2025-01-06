@@ -52,15 +52,18 @@ export default function Login(){
     
     return(
         <div className="login">
+          <div className="blod"></div>
             <h2>Welcome to Daily Habit</h2>
            
              <form onSubmit={handleSubmit}>
+              <div class="form-group">
                 <label> User Email</label>
                 <input type="text" required value={email}  onChange={(e)=>setEmail(e.target.value)}/> 
                 <label> Password</label>
-                <input type="text" required value={password}  onChange={(e)=>setPassword(e.target.value)}/> 
+                <input type="password" required value={password}  onChange={(e)=>setPassword(e.target.value)}/> 
                 <button >Login</button>
                 {error && <p style={{ color: 'red' ,textAlign:'center'}}>{error}</p>}
+                </div>
              </form>
             
              <div className="regestir-her">

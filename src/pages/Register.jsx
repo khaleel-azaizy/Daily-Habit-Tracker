@@ -39,6 +39,7 @@ export default function Register(){
     
     return(
         <div className="login">
+            <div className="blod"></div>
             <h2>Welcome to Daily Habit</h2>
            
              <form onSubmit={handleSubmit}>

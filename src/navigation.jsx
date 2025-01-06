@@ -1,4 +1,5 @@
 import { NavLink ,Outlet} from "react-router-dom"
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function navigation(){
     const logout = () => {
@@ -13,7 +14,7 @@ return(
             <div className="header">
             <h1>Daily Habits</h1>
             <button className="logout" onClick={logout}>
-                LogOut
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
             </button>
             </div>
         

@@ -67,7 +67,7 @@ export default function UserNotes(){
 
       const StyledWrapper = styled.div`
       button {
-       width: 5em;
+       width: 4em;
        height: 3em;
        border-radius: 30em;
        font-size: 15px;
