@@ -66,7 +66,7 @@ export default function UserNotes(){
       }, [title]);
 
       const StyledWrapper = styled.div`
-      button {
+      .done-button {
        width: 4em;
        height: 3em;
        border-radius: 30em;
@@ -75,11 +75,11 @@ export default function UserNotes(){
        border: none;
        position: relative;
        overflow: hidden;
-       z-index: 1;
+       
        
       }
     
-      button::before {
+      .done-button::before {
        content: '';
        width: 0;
        height: 3em;
@@ -90,7 +90,7 @@ export default function UserNotes(){
        background-image: linear-gradient(to right,rgba(15, 142, 216, 0.61) 0%,rgb(71, 172, 249) 100%);
        transition: .5s ease;
        display: block;
-       z-index: -1;
+       
       }
     
       button:hover::before {
@@ -105,7 +105,7 @@ export default function UserNotes(){
           <div className="note-details">
             <h4>{note.description}</h4>
             <StyledWrapper>
-            <button  onClick={() => handleDelete(note.noteId)}> done!</button>
+            <button className="done-button"  onClick={() => handleDelete(note.noteId)}> done!</button>
           </StyledWrapper>
           </div>
         </div>

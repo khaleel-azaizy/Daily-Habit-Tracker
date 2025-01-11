@@ -26,17 +26,14 @@ body {
 .center-links {
   display: flex;
   gap: 20px; 
-  margin-top: 5px;
-  margin-bottom: 10px;
-  justify-content: center;
-  flex-grow: 1;
-  
+  top: 0;
+ 
 }
 header h1 {
   font-size: 30px;
-  text-align: center;
-  flex-grow: 1;
+  text-align: left;
   margin-bottom: 10px;
+  border-bottom: #082c4a 3px solid;
 }
 
 header nav a{
@@ -59,6 +56,7 @@ header nav a.active:hover{
 }
 .navigation .header{
   display: flex;
+ 
 
 }
 .navigation .logout{
@@ -132,6 +130,7 @@ main {
   box-sizing: border-box;
   
 }
+
 .login button{
   margin: 30px auto;
   font: 1.5em sans-serif;
@@ -334,7 +333,7 @@ font-size:medium;
 
 }
 
-.user-tasks .note-content button{
+.user-tasks .note-content .add-note{
   flex-grow: 1;
   padding: 8px;
   width:70px ;
@@ -345,6 +344,7 @@ font-size:medium;
   font-weight: 600;
   margin-left: 5px;
   transition: 0.3s;
+  z-index: 10;
 }
 .user-tasks .note-content button:hover{
   background-color: var(--primary);
@@ -355,7 +355,7 @@ font-size:medium;
 .user-tasks .all-notes{
 
   max-width: 100%; 
-  min-height: 40rem;
+  min-height: 4.7rem;
   overflow-y: auto; 
   border-right: 1px solid #ddd;
   background-color: #082c4a3f;
@@ -389,3 +389,5 @@ font-size:medium;
   overflow-wrap: break-word; 
   max-width: calc(100% - 80px);
 }
+
+

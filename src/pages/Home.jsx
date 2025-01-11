@@ -170,7 +170,12 @@ export default function Home() {
         eventDrop={handleEventDrop}
         select={handleDateSelect}
         eventClick={handleEventRemove}
-        height={"90vh"}
+        height={"80vh"}
+        headerToolbar={{
+          right: 'prev,next today',
+          center: 'title',
+          left: ''
+        }}
         events={events}
       />
     </div>
@@ -189,11 +194,11 @@ export default function Home() {
           placeholder="Enter event title"
         />
         <div className="modal-button">
+          <button  onClick={handleClick} className="close-modal">
+            Close
+          </button>
           <button type="submit" className="submit-modal">
             Submit
-          </button>
-          <button className="close-modal" onClick={handleClick}>
-            Close
           </button>
         </div>
       </form>

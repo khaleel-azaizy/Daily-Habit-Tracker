@@ -16,7 +16,7 @@ return(
             <button className="logout" onClick={logout}>
             <i class="fa fa-sign-out" aria-hidden="true"></i>
             </button>
-            </div>
+            
         
             <nav className="nav-links">
             <div className="center-links">
@@ -25,7 +25,7 @@ return(
             </div>
             
             </nav>
-        
+            </div>
         </header>
         <main>
             <Outlet/>
