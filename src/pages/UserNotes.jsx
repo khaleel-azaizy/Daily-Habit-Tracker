@@ -1,5 +1,4 @@
 import { useState,useEffect } from "react";
-import styled from 'styled-components';
 export default function UserNotes(){
 
     const [description, setDescription] = useState('');
@@ -12,17 +11,22 @@ export default function UserNotes(){
         noteId: new Date().getTime().toString(), 
         description
       };
-      setTitle(!title);
+     
       fetch(`http://localhost:4000/add-note/${storedUserId}`, {
         method:'post',
         headers:{"Content-Type": "application/json"},
         body:JSON.stringify(newNote)
       })
-      .then((response) => response.json())
+      .then((response) =>{ 
+        if(response.ok){
+        response.json();
+        setTitle(!title);
+        }
+      })
       .then((data) => {
         const sortedNotes = data.sort();
         setNotes(sortedNotes);
-        
+       
       })
       .catch((error) => {
         console.error('Error fetching notes:', error);
@@ -65,38 +69,7 @@ export default function UserNotes(){
           });
       }, [title]);
 
-      const StyledWrapper = styled.div`
-      .done-button {
-       width: 4em;
-       height: 3em;
-       border-radius: 30em;
-       font-size: 15px;
-       font-family: inherit;
-       border: none;
-       position: relative;
-       overflow: hidden;
-       
-       
-      }
     
-      .done-button::before {
-       content: '';
-       width: 0;
-       height: 3em;
-       border-radius: 30em;
-       position: absolute;
-       top: 0;
-       left: 0;
-       background-image: linear-gradient(to right,rgba(15, 142, 216, 0.61) 0%,rgb(71, 172, 249) 100%);
-       transition: .5s ease;
-       display: block;
-       
-      }
-    
-      button:hover::before {
-       width: 9em;
-      }`;
-
     return(
         <div className="user-tasks">
            <div className="all-notes">
@@ -104,9 +77,9 @@ export default function UserNotes(){
         <div className="notes-preview" key={note.noteId}>
           <div className="note-details">
             <h4>{note.description}</h4>
-            <StyledWrapper>
-            <button className="done-button"  onClick={() => handleDelete(note.noteId)}> done!</button>
-          </StyledWrapper>
+           
+            <button className="done-button"  onClick={() => handleDelete(note.noteId)}></button>
+          
           </div>
         </div>
       ))}

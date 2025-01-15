@@ -161,6 +161,7 @@ export default function Home() {
     </div>
 
     <div className="calendar-container">
+      
       <FullCalendar
         ref={calendarRef}
         plugins={[dayGrid, timeGrid, interaction]}
@@ -180,7 +181,7 @@ export default function Home() {
       />
     </div>
   </div>
-
+  
   {modal && (
     <div className="modal">
       <div className="overlay"></div>
@@ -193,6 +194,7 @@ export default function Home() {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Enter event title"
         />
+
         <div className="modal-button">
           <button  onClick={handleClick} className="close-modal">
             Close

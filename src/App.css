@@ -1,17 +1,20 @@
 :root {
-  --primary: #082c4a;
-  --secondary: #bcd1e6;
-  --theme: #2b6f91;
+  --primary: #b7b7b7;
+  --secondary: #ffffff;
+  --theme: #000000be;
 
 }
 body {
   margin: 0;
   padding: 20px;
   font-family: "Poppins";
-  background: var(--secondary);
+  background-image: url("../public/light-gray-abstract-background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+ background-attachment: fixed;
 }
 * {
-  color: #011e35;
+
   margin: 0;
   
 }
@@ -22,24 +25,28 @@ body {
   justify-content: space-between; 
   flex-direction: column; 
   align-items: center; 
+  
 }
 .center-links {
   display: flex;
   gap: 20px; 
   top: 0;
- 
+}
+.center-links a{
+  color: white;
 }
 header h1 {
   font-size: 30px;
   text-align: left;
   margin-bottom: 10px;
-  border-bottom: #082c4a 3px solid;
+  color: var(--theme);
+  border-bottom: #000000 3px solid;
 }
 
 header nav a{
   text-decoration: none;
   padding: 6px;
-  background: #4178a56e;
+  background: #6161616e;
   border-radius: 4px;
   transition: 0.3s;
 }
@@ -47,11 +54,10 @@ header nav a.active {
   background: var(--theme);
 }
 header nav a:hover{
-  color: white;
+  
   background:  var(--theme);
 }
 header nav a.active:hover{
-  color: var(--primary);
   background:  var(--theme);
 }
 .navigation .header{
@@ -99,10 +105,10 @@ main {
   min-height: 20rem;
   display: block;
   justify-content: center;
-  margin: 200px auto ;
+  margin: 15em auto ;
   font-family: 'roboto', sans-serif;
-  background-color:rgba(18, 142, 190, 0.425);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  background-color:rgba(71, 71, 71, 0.402);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.459);
   border: 1px solid rgba(255,255,255, .18);
   border-radius: 20px;
 
@@ -117,7 +123,7 @@ main {
   
   text-align: center;
   font-size: 30px;
-  color: #ffffff;
+  color: #000000;
   margin-bottom: 30px;
 }
 .login input{
@@ -136,7 +142,7 @@ main {
   font: 1.5em sans-serif;
   font-weight: 600;
   display: block;
-  color:var(--primary);
+  color:var(--theme);
   border: none;
   border-radius: 6px;
   transition: 0.4s;
@@ -145,48 +151,36 @@ main {
 
 }
 .login button:hover{
-  background-color:  #3f8ac8a4;
+  background-color:  #464646ce;
   color: #ffffff;
 
 }
-.regestir-her{
+.regestir-her ,.login-her{
   display: flex;
   gap:10px;
   margin: 10px;
+  color: #000000;
+  font-size: 16px;
 }
-.regestir-her :Link{
+.regestir-her :Link,.login-her :Link{
   text-decoration: none;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
+  color: #000000;
 }
-.regestir-her :Link:hover{
+.regestir-her :Link:hover,.login-her :Link:hover{
   text-decoration: underline;
+  
 }
-
-.login-her{
-  display: flex;
-  gap:10px;
-  margin: 5px;
-}
-.login-her :Link{
-  text-decoration: none;
-  font-size: 20px;
-  font-weight: 700;
-
-}
-.login-her :Link:hover{
-  text-decoration: underline;
-}
-.form-group input:focus ~ label,
-.form-group input:valid ~ label{
-    top: 5px;
+.regestir-her a ,.login-her a{
+color: #000;
 }
 .blod{
   position: absolute;
   width: 500px;
   height: 500px;
   z-index: -1;
-  background: linear-gradient(135deg , #1196cba8 , #25e3fc41);
+  background: linear-gradient(135deg , #10101090 , #feffffbd);
   border-radius: 30% 70% 70% 30% / 30% 30% 70% 70% ;
   transform: translate(-100px , -50px);
   animation: img_animation 20s linear infinite alternate;
@@ -255,7 +249,7 @@ body.active-modal {
   transition: 0.4s;
 }
 .close-modal:hover,.submit-modal:hover{
-  background: #2b557e;
+  background: #afafaf;
 }
 .home-container {
   display: flex; 
@@ -265,8 +259,9 @@ body.active-modal {
   flex: 1; 
   max-width: 300px; 
   overflow-y: auto; 
+  color: white;
   border-right: 1px solid #ddd;
-  background-color: #082c4a3f;
+  background-color: #474747cb;
   border-radius: 15px;
   padding: 10px;
 }
@@ -278,6 +273,7 @@ margin-bottom: 20px;
 .calendar-container {
   flex: 3; 
   padding: 10px; 
+  color: #000000;
 }
 
 .event-preview {
@@ -285,7 +281,7 @@ margin-bottom: 20px;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
-  background-color: #cadff7fc;
+  background-color: var(--primary);
 }
 
 .event-preview h3 {
@@ -302,20 +298,25 @@ margin-bottom: 20px;
   width: 100%; 
   
 }
-
+.user-tasks{
+  gap: 10px;
+  margin: 10px;
+  
+}
 .user-tasks .note-content{
- background-color:#2b6f9182;
+ background-color:var(--primary);
  width: 99%;
  position: fixed;
  padding: 13px;
  border-radius: 8px;
- border: 3px solid #ffffff6c;
+ border: 1px solid #ffffff6c;
  display: flex;
  position: fixed;
  bottom: 0;
  left: 0;
  right: 0;
  flex-grow: 1;
+ 
 
 }
 .user-tasks .note-content input{
@@ -324,6 +325,7 @@ height: 30px;
 border-radius: 9px;
 border: none;
 font-size:medium;
+color: #000000;
 }
 .user-tasks .note-content input::placeholder{
   font-size: 15px;
@@ -337,6 +339,7 @@ font-size:medium;
   flex-grow: 1;
   padding: 8px;
   width:70px ;
+  color: white;
   background-color: var(--theme);
   border: none;
   border-radius: 9px;
@@ -346,9 +349,9 @@ font-size:medium;
   transition: 0.3s;
   z-index: 10;
 }
-.user-tasks .note-content button:hover{
-  background-color: var(--primary);
-  color: white;
+.user-tasks .note-content .add-note:hover{
+  background-color: #424242b2;
+ 
 
 }
 
@@ -358,7 +361,7 @@ font-size:medium;
   min-height: 4.7rem;
   overflow-y: auto; 
   border-right: 1px solid #ddd;
-  background-color: #082c4a3f;
+  background-color: var(--primary);
   border-radius: 15px;
   padding: 10px;
   flex-wrap: wrap;
@@ -368,12 +371,30 @@ font-size:medium;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
-  background-color: #cadff7fc;
+  color: white;
+  background-color: #424242;
   transition: 0.3s;
 
 }
+.done-button{
+  background: transparent;
+  border:3px solid #ffffff;
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+  transition: 0.3s;
+}
+.done-button:hover{
+  rotate: 35deg;
+  margin-right: 5px;
+  border:3px solid #00871b;
+  border-left: hidden;
+  border-top: hidden;
+  width: 15px;
+  
+}
 .user-tasks .all-notes .notes-preview:hover{
-  background-color: #91c1f7;
+  background-color: #525252;
 
 }
 .user-tasks .all-notes .notes-preview .note-details{
@@ -389,5 +410,25 @@ font-size:medium;
   overflow-wrap: break-word; 
   max-width: calc(100% - 80px);
 }
+.fc-event-title-container{
+  background-color: var(--theme);
+  border-radius: 5px;
+  transition: 0.3s;
+  font-size: 15px;
+  font-weight: 600;
+  height: 1.5em;
+  text-align: center;
+}
+.fc-event-title-container:hover{
+  background-color: #6d6e6e;
+  
+}
 
-
+.fc-daygrid-day-frame {
+  border: 1px solid #00000057;
+  
+}
+.fc-event-main-frame{
+  border-radius: 5px;
+  background:transparent;
+}
