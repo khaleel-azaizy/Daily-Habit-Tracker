@@ -17,6 +17,7 @@ export default function Register(){
         fetch('http://localhost:4000/register',{
             method:'post', 
             headers:{"Content-Type": "application/json"},
+            credentials:'include',
             body:JSON.stringify(user)
         }).then(response => {
             if (response.ok) {
@@ -26,9 +27,10 @@ export default function Register(){
                 throw new Error('email is already used');
             }
         }).then(data => {
+            
+            
            
-            login(); 
-            navigate('/home'); 
+            navigate('/login'); 
         })
          .catch(err =>{
             console.error(err);
@@ -48,7 +50,7 @@ export default function Register(){
                 <label> User Name</label>
                 <input type="text" required value={name}  onChange={(e)=>setName(e.target.value)}/> 
                 <label> Password</label>
-                <input type="text" required value={password}  onChange={(e)=>setPassword(e.target.value)}/> 
+                <input type="password" required value={password}  onChange={(e)=>setPassword(e.target.value)}/> 
                 <button >Register</button>
                 {error && <p style={{ color: 'red' ,textAlign:'center'}}>{error}</p>}
              </form>

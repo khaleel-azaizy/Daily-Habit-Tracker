@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate,Link  } from "react-router-dom";
 import {useAuth } from "../components/AuthProvider"
 
@@ -10,7 +10,25 @@ export default function Login(){
     const navigate = useNavigate();
     const { login } = useAuth();
     const [error, setError] = useState(''); 
-    
+    const [loading, setLoading] = useState(false);
+    useEffect(() => {
+      setLoading(true);
+          
+      
+      fetch('http://localhost:4000/refresh', {credentials: 'include'})
+      .then((response) => {
+        if(response.ok){
+          login();
+         
+          navigate('/home');
+      
+        }
+      })
+      .catch((error) => { 
+        console.error('Error during refersh:', error);
+      });
+      setLoading(false);
+    }, []);
 
     const handleSubmit =  (e) => {
         e.preventDefault();
@@ -21,6 +39,7 @@ export default function Login(){
             headers: {
               'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify(user),
           })
           .then((response) => {
@@ -51,12 +70,14 @@ export default function Login(){
     
     
     return(
-        <div className="login">
+      <div>
+        {loading&&(<div className="loading"></div>)}
+        {!loading&&(<div className="login">
           <div className="blod"></div>
             <h2>Welcome to Daily Habit</h2>
            
              <form onSubmit={handleSubmit}>
-              <div class="form-group">
+              <div className="form-group">
                 <label> User Email</label>
                 <input type="text" required value={email} placeholder="Email" onChange={(e)=>setEmail(e.target.value)}/> 
                 <label> Password</label>
@@ -71,6 +92,7 @@ export default function Login(){
              <Link to="/register">Register her!</Link>
              </div>
             
+        </div>)}
         </div>
     )
     }

@@ -3,8 +3,17 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function navigation(){
     const logout = () => {
-        localStorage.clear(); 
-        window.location.href = '/login';
+        fetch('http://localhost:4000/logout', {
+            method: 'POST',
+            credentials: 'include',
+          })
+         .then(() => {
+                localStorage.clear(); 
+               window.location.href = '/login';
+                
+            })
+            .catch((err) => console.error('Logout error:', err));
+       
       };
 
 return(
@@ -14,7 +23,7 @@ return(
             <div className="header">
             <h1>Daily Habits</h1>
             <button className="logout" onClick={logout}>
-            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            <i className="fa fa-sign-out" aria-hidden="true"></i>
             </button>
             
         

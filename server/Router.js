@@ -1,14 +1,20 @@
 const express = require('express')
 const { getDb, connectToDb } = require('./db')
 const cors = require('cors');
-const { ObjectId } = require('mongodb')
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+const bcrypt = require('bcrypt');
+const cookieParser = require('cookie-parser');
+const { ObjectId } = require('mongodb');
+const e = require('express');
+const auth = require('./auth');
 
 
-// init app & middleware
 const app = express()
 app.use(express.json())
-app.use(cors());
-// db connection
+app.use(cookieParser());  
+app.use(cors({origin: 'http://localhost:3000',credentials: true}));
+
 let db
 
 connectToDb((err) => {
@@ -19,23 +25,42 @@ connectToDb((err) => {
     db = getDb()
   }
 })
-
-// routes
+ 
+const JWT_SECRET = process.env.JWT_SECRET;
 
 app.post('/login', (req, res) => {
   const User = req.body;
-  
-  db.collection('Users').findOne(User)
+  db.collection('Users').findOne({ email: User.email })
   .then(doc =>{
-    if(User.email===doc.email&&User.password===doc.password){   
+    if(doc.email === User.email && bcrypt.compare(User.password,doc.password.toString())){   
       const id = doc._id.toString();
-      console.log(id)
+
+      const token = jwt.sign({ userId: id }, JWT_SECRET, {
+        expiresIn: '1d',  
+      });
+
+     
+
+      db.collection('UserTokens').updateOne({userId: new ObjectId(id)} , { $push: { tokens: token } })
+      console.log(token);
+
+      res.cookie('token', token, {
+        httpOnly: true,       
+        secure: false,        
+        sameSite: 'strict',   
+        maxAge: 24 * 60 * 60 * 1000, 
+      });
+
+     
       res.status(200).send({userid:id})
+
     } else{
+      
       res.status(500).json({error: 'email or password are incorrect'})
     }
   }) 
   .catch(err => {
+    console.log(err);
     res.status(500).json({error: 'Could not fetch the document'})
   })
   
@@ -44,26 +69,53 @@ app.post('/login', (req, res) => {
   app.post('/register', (req, res) => {
     const User = req.body;
      
-    db.collection('Users').findOne(User)
+    db.collection('Users').findOne({ email: User.email })
     .then(doc =>{
       if(doc){   
         res.status(500).json(doc)
       } else{
-        db.collection('Users').insertOne(User)
+        const saltRounds = 10;
+        const hashedPassword =  bcrypt.hash(User.password, saltRounds);
+        const newUser = ({
+          email: User.email,
+          name: User.name,
+          password: hashedPassword,
+        });
+        db.collection('Users').insertOne(newUser);
+        db.collection('UserTokens').insertOne({userId: newUser._id, tokens: []})
         res.json(200)
       }
-     })
-     .catch(err => {
-      res.status(500).json({error: 'Could not fetch the document'})
     })
+        
+      });
 
+    app.get('/refresh',auth, async (req, res) => {
+      try {
+        
+        const { token } = req.cookies;
+        
+        if (!token) {
+          return res.status(401).json({ error: 'No refresh token' });
+        }
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+       
+        db.collection('UserTokens').findOne({ userId: new ObjectId(decoded.userId )})
+        .then(doc =>{
+          if(!doc.tokens.includes(token)){
+            res.status(401).json({ error: 'Invalid refresh token' });
+          } else{
+            res.status(200).json();
+          }
+        })
+      } catch (error) {}
     });
 
-    
-    app.post('/add-event/:userId', async (req, res) => {
+    app.post('/add-event/:userId',auth,async (req, res) => {
       try {
+        
         const userId = req.params.userId;
         const eventData = req.body;
+       
         await db.collection('Users').updateOne(
           { _id: new ObjectId(userId) },
           { $push: { events: { eventId: new ObjectId(), ...eventData } } }
@@ -78,7 +130,7 @@ app.post('/login', (req, res) => {
 
     
   
-    app.get('/get-events/:userid', async (req, res) => {
+    app.get('/get-events/:userid',auth, async (req, res) => {
       try {
         const userId = req.params.userid;
         const user = await db.collection('Users').findOne( { _id: new ObjectId(userId)  });
@@ -89,7 +141,7 @@ app.post('/login', (req, res) => {
       }
     });
 
-    app.delete('/delete-event/:userid/:id', (req, res) => {
+    app.delete('/delete-event/:userid/:id',auth, (req, res) => {
       const event = req.body;
       const userId = req.params.userid;
       const eventId = req.params.id;
@@ -104,7 +156,7 @@ app.post('/login', (req, res) => {
         });
     });
 
-    app.put('/update-event/:userid/:id', async (req, res) => {
+    app.put('/update-event/:userid/:id',auth, async (req, res) => {
       try {
         const eventId = req.params.id;
         const userId = req.params.userid;
@@ -138,7 +190,7 @@ app.post('/login', (req, res) => {
       }
     });
 
-    app.get('/get-notes/:userid', async (req, res) => {
+    app.get('/get-notes/:userid',auth, async (req, res) => {
       try {
         const userId = req.params.userid;
         const user = await db.collection('Users').findOne( { _id: new ObjectId(userId)  });
@@ -149,7 +201,7 @@ app.post('/login', (req, res) => {
       }
     });
 
-    app.post('/add-note/:userId', async (req, res) => {
+    app.post('/add-note/:userId',auth, async (req, res) => {
       try {
         const userId = req.params.userId;
         const noteData = req.body; 
@@ -164,7 +216,7 @@ app.post('/login', (req, res) => {
         res.status(500).send({ error: 'Failed to add notes' });
       }
     });
-    app.delete('/delete-note/:userid/:noteid', async (req, res) => {
+    app.delete('/delete-note/:userid/:noteid',auth, async (req, res) => {
       try {
         const userId = req.params.userid;
         const noteId = req.params.noteid;
@@ -191,3 +243,28 @@ app.post('/login', (req, res) => {
         res.status(500).send({ error: 'Failed to update event', details: error.message });
       }
     });
+
+
+    app.post('/logout', async (req, res) => {
+      const { token } = req.cookies;
+      if (!token) {
+        return res.status(401).json({ error: 'No refresh token' });
+      }
+      const decoded = jwt.verify(token, JWT_SECRET);
+
+       db.collection('UserTokens').updateOne(
+        { 
+          userId: new ObjectId(decoded.userId) },
+        { $pull: { tokens: token } }
+      )
+      .then(() => {
+        res.clearCookie('token');
+        res.status(200).json({ message: 'Logged out successfully' });
+      })
+      .catch((err) => {
+        console.error('Logout error:', err);
+        res.status(500).json({ error: 'Failed to logout' });
+      });
+   
+  });
+ 

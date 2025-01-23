@@ -12,10 +12,12 @@ export default function Home() {
   const [events, setEvents] = useState([]);
   const [upcomingEvents,setUpcomingevents]=useState([]);
   const storedUserId = localStorage.getItem('userId');
+
+
   useEffect(() => {
     
-    fetch(`http://localhost:4000/get-events/${storedUserId}`) 
-      .then((response) => response.json())
+    fetch(`http://localhost:4000/get-events/${storedUserId}`,{credentials:'include'}) 
+      .then((response) => response.json()||null)
       .then((data) => {
         const sortedEvents = data.sort((a, b) => new Date(a.start) - new Date(b.start));
         setEvents(sortedEvents);
@@ -29,7 +31,7 @@ export default function Home() {
 
 
   const fetchEvents =() => {
-    fetch(`http://localhost:4000/get-events/${storedUserId}`) 
+    fetch(`http://localhost:4000/get-events/${storedUserId}`,{credentials:'include'}) 
       .then((response) => response.json())
       .then((data) => {
         const sortedEvents = data.sort((a, b) => new Date(a.start) - new Date(b.start));
@@ -49,6 +51,7 @@ export default function Home() {
   
   const handleClick = () => {
     setModal(!modal);
+    setTitle('');
   };
 
   const handleDateSelect = (selectInfo) => {
@@ -72,14 +75,16 @@ export default function Home() {
     };
   
       calendarApi.addEvent(newEvent);
-      console.log(storedUserId)
+      
       fetch(`http://localhost:4000/add-event/${storedUserId}`,{
         method:'post',
         headers:{"Content-Type": "application/json"},
+        credentials:'include' ,
         body:JSON.stringify(newEvent)
-     }).then(()=>{
+     }).then((response)=>{
+      if(response.ok){
         setEvents((prevEvents) => [...prevEvents, newEvent]);
-        
+      }
      })
 
       setModal(false); 
@@ -94,6 +99,7 @@ export default function Home() {
       fetch(`http://localhost:4000/delete-event/${storedUserId}/${eventId}`, {
         method: 'DELETE',
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body:JSON.stringify(eventClick.event)
       }).then(() => {
         console.log('Event deleted');
@@ -119,8 +125,8 @@ export default function Home() {
     fetch(`http://localhost:4000/update-event/${storedUserId}/${info.event.id}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json',
-      },
+        'Content-Type': 'application/json'},
+        credentials: 'include',
       body: JSON.stringify(updatedEvent),
     })
       .then((response) => {
@@ -186,7 +192,7 @@ export default function Home() {
     <div className="modal">
       <div className="overlay"></div>
       <form className="modal-content" onSubmit={handleSubmit}>
-        <h2>Enter Event Details</h2>
+        <h2>Event Details</h2>
         <input
           type="text"
           required

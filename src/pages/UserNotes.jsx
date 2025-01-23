@@ -15,6 +15,7 @@ export default function UserNotes(){
       fetch(`http://localhost:4000/add-note/${storedUserId}`, {
         method:'post',
         headers:{"Content-Type": "application/json"},
+        credentials:'include' ,
         body:JSON.stringify(newNote)
       })
       .then((response) =>{ 
@@ -24,8 +25,7 @@ export default function UserNotes(){
         }
       })
       .then((data) => {
-        const sortedNotes = data.sort();
-        setNotes(sortedNotes);
+        setTitle(!title);
        
       })
       .catch((error) => {
@@ -39,11 +39,10 @@ export default function UserNotes(){
         headers: {
           'Content-Type': 'application/json',
         },
-        
+        credentials: 'include'
       })
         .then((response) => {
           if (response.ok) {
-            console.log('notes updated successfully');
             setTitle(!title);
             
           } else {
@@ -57,10 +56,10 @@ export default function UserNotes(){
 
      useEffect(() => {
         
-        fetch(`http://localhost:4000/get-notes/${storedUserId}`) 
+        fetch(`http://localhost:4000/get-notes/${storedUserId}`,{credentials:'include'}) 
           .then((response) => response.json())
           .then((data) => {
-            const sortedNotes = data.sort();
+            const sortedNotes = data;
             setNotes(sortedNotes);
             setDescription('');
           })

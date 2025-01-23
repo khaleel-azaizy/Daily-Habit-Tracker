@@ -2,7 +2,8 @@
   --primary: #b7b7b7;
   --secondary: #ffffff;
   --theme: #000000be;
-
+  --fc-event-bg-color: transparent;
+  --fc-event-border-color:transparent;
 }
 body {
   margin: 0;
@@ -213,9 +214,10 @@ body.active-modal {
   position: fixed;
   top: 50%;
   left: 50%;
+  color:white;
   z-index: 999;
   transform: translate(-50%, -50%);
-  background:var(--theme);
+  background:#424242;
   padding: 14px 28px;
   border-radius: 8px;
   max-width: 600px;
@@ -236,8 +238,8 @@ body.active-modal {
   display: flex;
   
 }
-.close-modal ,.submit-modal{
-  background:var(--primary);
+.close-modal {
+  background:var(--theme);
   color: #ffffff;
   font-size: 15px;
   font-weight: 750;
@@ -248,8 +250,23 @@ body.active-modal {
   border-radius: 6px;
   transition: 0.4s;
 }
-.close-modal:hover,.submit-modal:hover{
-  background: #afafaf;
+.submit-modal{
+  background:var(--secondary);
+  color: black;
+  font-size: 15px;
+  font-weight: 750;
+  display: flex;
+  padding: 15px;
+  margin: 15px 45px;
+  border: none;
+  border-radius: 6px;
+  transition: 0.4s;
+}
+.submit-modal:hover{
+  background: #686868;
+}
+.close-modal:hover{
+  background: #313131;
 }
 .home-container {
   display: flex; 
@@ -382,17 +399,18 @@ color: #000000;
   padding: 5px;
   width: 30px;
   height: 30px;
-  transition: 0.3s;
+  transition: 0.5s;
 }
 .done-button:hover{
-  rotate: 35deg;
+  rotate: 30deg;
   margin-right: 5px;
   border:3px solid #00871b;
   border-left: hidden;
   border-top: hidden;
-  width: 15px;
+  width: 12px;
   
 }
+
 .user-tasks .all-notes .notes-preview:hover{
   background-color: #525252;
 
@@ -428,7 +446,24 @@ color: #000000;
   border: 1px solid #00000057;
   
 }
-.fc-event-main-frame{
-  border-radius: 5px;
-  background:transparent;
+.loading{
+  display: flex;
+  margin: 0 auto;
+  margin-top: 400px;
+  height: 40px;
+  width: 40px;
+  border-radius:  50%/50% ;
+  border: 10px solid var(--primary);
+  border-top: 10px solid #000000;
+  z-index: 999;
+ 
+  animation: loading_animation infinite 1.5s linear;
 }
+@keyframes loading_animation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
