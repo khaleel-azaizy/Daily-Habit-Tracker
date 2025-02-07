@@ -115,7 +115,7 @@ app.post('/login', (req, res) => {
         
         const userId = req.params.userId;
         const eventData = req.body;
-       
+        console.log('Received event data:', eventData);
         await db.collection('Users').updateOne(
           { _id: new ObjectId(userId) },
           { $push: { events: { eventId: new ObjectId(), ...eventData } } }
@@ -142,10 +142,10 @@ app.post('/login', (req, res) => {
     });
 
     app.delete('/delete-event/:userid/:id',auth, (req, res) => {
-      const event = req.body;
+      
       const userId = req.params.userid;
       const eventId = req.params.id;
-      console.log('Received delete event request with:',  event); 
+      
       db.collection('Users').updateOne({ _id: new ObjectId(userId) },
        { $pull: { events: { id: eventId } } })
         .then(() => {

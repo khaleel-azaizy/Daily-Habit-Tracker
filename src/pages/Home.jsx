@@ -1,25 +1,22 @@
-import FullCalendar from "@fullcalendar/react";
-import dayGrid from "@fullcalendar/daygrid";
-import timeGrid from "@fullcalendar/timegrid";
-import interaction from "@fullcalendar/interaction";
 import { useState, useRef,useEffect } from "react";
-
+import Calendar from "./Calendar";
 export default function Home() {
-  const calendarRef = useRef(null);
   const [modal, setModal] = useState(false);
   const [title, setTitle] = useState('');
   const [selectedDateInfo, setSelectedDateInfo] = useState(null); 
   const [events, setEvents] = useState([]);
   const [upcomingEvents,setUpcomingevents]=useState([]);
   const storedUserId = localStorage.getItem('userId');
-
-
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentDay, setCurrentDay] = useState(new Date().getDate());
+  const [day, setDay] = useState({});
   useEffect(() => {
     
     fetch(`http://localhost:4000/get-events/${storedUserId}`,{credentials:'include'}) 
       .then((response) => response.json()||null)
       .then((data) => {
-        const sortedEvents = data.sort((a, b) => new Date(a.start) - new Date(b.start));
+        const sortedEvents = data.sort((a, b) => new Date(a.date) - new Date(b.date));
         setEvents(sortedEvents);
         
       })
@@ -34,7 +31,7 @@ export default function Home() {
     fetch(`http://localhost:4000/get-events/${storedUserId}`,{credentials:'include'}) 
       .then((response) => response.json())
       .then((data) => {
-        const sortedEvents = data.sort((a, b) => new Date(a.start) - new Date(b.start));
+        const sortedEvents = data.sort((a, b) => new Date(a.date) - new Date(b.date));
         setEvents(sortedEvents);
         
       })
@@ -45,73 +42,38 @@ export default function Home() {
  
   useEffect(() => {
     const currentDate = new Date();
-    const upcomingEvents = events.filter((event) => new Date(event.start) >= currentDate);
+    const upcomingEvents = events.filter((event) => new Date(event.date) >= currentDate);
     setUpcomingevents(upcomingEvents)
   }, [events]);
   
   const handleClick = () => {
-    setModal(!modal);
+    setModal(false);
     setTitle('');
   };
 
-  const handleDateSelect = (selectInfo) => {
-    setSelectedDateInfo(selectInfo); 
-    setModal(true);
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); 
-
-    const calendarApi = selectedDateInfo.view.calendar;
-    calendarApi.unselect();
-
-    if (title) {
-    const newEvent = {
-      id: new Date().getTime().toString(),
-      title,
-      start: selectedDateInfo.startStr,
-      end: selectedDateInfo.endStr,
-      allDay: selectedDateInfo.allDay,
-    };
-  
-      calendarApi.addEvent(newEvent);
-      
-      fetch(`http://localhost:4000/add-event/${storedUserId}`,{
-        method:'post',
-        headers:{"Content-Type": "application/json"},
-        credentials:'include' ,
-        body:JSON.stringify(newEvent)
-     }).then((response)=>{
-      if(response.ok){
-        setEvents((prevEvents) => [...prevEvents, newEvent]);
-      }
-     })
-
-      setModal(false); 
-      setTitle(''); 
-    }
-  };
-
-  const handleEventRemove = (eventClick) => {
+  const handleEventRemove = (date,title) => {
     if (window.confirm("Are you sure you want to delete this event?")) {
-      const eventId = eventClick.event.id;
-
+      const eventId = new Date(date).getTime().toString()+title;
+      console.log(eventId);
       fetch(`http://localhost:4000/delete-event/${storedUserId}/${eventId}`, {
         method: 'DELETE',
         headers: { "Content-Type": "application/json" },
         credentials: 'include',
-        body:JSON.stringify(eventClick.event)
+        
       }).then(() => {
         console.log('Event deleted');
+        setEvents((prevEvents) => prevEvents.filter(event => event.id !== eventId));
+
       }).catch(err => {
         console.error('Error deleting event:', err);
       });
-      eventClick.event.remove();
-      fetchEvents();
+      
+    
   };
   
   }
-
+/*
   const handleEventDrop = (info) => {
    
     const updatedEvent = {
@@ -142,7 +104,7 @@ export default function Home() {
         console.error('Error updating event:', error);
       });
   };
-
+*/
 
   if (modal) {
     document.body.classList.add('active-modal');
@@ -150,6 +112,76 @@ export default function Home() {
     document.body.classList.remove('active-modal');
   }
 
+  const goToPreviousMonth = () => {
+    if (currentMonth === 0) {
+      setCurrentYear(currentYear - 1);
+      setCurrentMonth(11);
+    } else {
+      setCurrentMonth(currentMonth - 1);
+    }
+
+  };
+
+  const goToNextMonth = () => {
+    if (currentMonth === 11) {
+      setCurrentYear(currentYear + 1);
+      setCurrentMonth(0);
+    } else {
+      setCurrentMonth(currentMonth + 1);
+    }
+  };
+  const gotToThisDay = () => {
+    setCurrentYear(new Date().getFullYear());
+    setCurrentMonth(new Date().getMonth());
+  }
+
+  const monthName = new Date(currentYear, currentMonth).toLocaleString("default", {
+    month: "long",
+  });
+
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; 
+    const day = date.getDate();
+  
+    const formattedMonth = month < 10 ? `0${month}` : month;
+    const formattedDay = day < 10 ? `0${day}` : day;
+  
+    return `${year}-${formattedMonth}-${formattedDay}`;
+  };
+
+  const handleNewDateSelect = (day) => {
+    setDay(day);
+    setCurrentDay(day.date);
+    setModal(true);
+  };
+  const handleNewEvent = (e) => {
+    e.preventDefault();
+    setModal(false); 
+    
+    const newEvent = {
+      id: new Date(day.year,day.month,currentDay).getTime().toString()+ title,
+      title,
+      date: formatDate(new Date(day.year,day.month, currentDay)),
+    };
+    fetch(`http://localhost:4000/add-event/${storedUserId}`,{
+      method:'post',
+      headers:{"Content-Type": "application/json"},
+      credentials:'include' ,
+      body:JSON.stringify(newEvent)
+   }).then((response)=>{
+    if(response.ok){
+      setTitle(''); 
+     
+      fetchEvents();
+
+    }
+    
+   })
+
+   
+  }
+  
   return (
     <div className="home">
  
@@ -167,31 +199,35 @@ export default function Home() {
     </div>
 
     <div className="calendar-container">
+    <div className="calendar-header">
+    <button onClick={goToPreviousMonth}>Prev</button>
+    <button onClick={goToNextMonth}>Next</button>
+    <h2>{monthName} {currentYear}</h2>
+    <button onClick={gotToThisDay}>Today</button>
+    </div>
+   
+    <div  className="my-calendar">
+    <span className="days">Sun</span>
+    <span className="days">Mon</span>
+    <span className="days">Tue</span>
+    <span className="days">Wed</span>
+    <span className="days">Thu</span>
+    <span className="days">Fri</span>
+    <span className="days">Sat</span>
+ 
+    </div>
+
+    
+    <Calendar year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleEventRemove}/>
+
       
-      <FullCalendar
-        ref={calendarRef}
-        plugins={[dayGrid, timeGrid, interaction]}
-        initialView="dayGridMonth"
-        selectable={true}
-        editable={true}
-        eventDrop={handleEventDrop}
-        select={handleDateSelect}
-        eventClick={handleEventRemove}
-        height={"80vh"}
-        headerToolbar={{
-          right: 'prev,next today',
-          center: 'title',
-          left: ''
-        }}
-        events={events}
-      />
     </div>
   </div>
   
   {modal && (
     <div className="modal">
       <div className="overlay"></div>
-      <form className="modal-content" onSubmit={handleSubmit}>
+      <form className="modal-content" onSubmit={handleNewEvent}>
         <h2>Event Details</h2>
         <input
           type="text"
@@ -212,6 +248,8 @@ export default function Home() {
       </form>
     </div>
   )}
+ 
 </div>
   )
 }
+
