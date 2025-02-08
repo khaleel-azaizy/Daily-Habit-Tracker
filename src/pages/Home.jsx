@@ -1,9 +1,9 @@
-import { useState, useRef,useEffect } from "react";
+import { useState,useEffect } from "react";
 import Calendar from "./Calendar";
 export default function Home() {
   const [modal, setModal] = useState(false);
   const [title, setTitle] = useState('');
-  const [selectedDateInfo, setSelectedDateInfo] = useState(null); 
+  
   const [events, setEvents] = useState([]);
   const [upcomingEvents,setUpcomingevents]=useState([]);
   const storedUserId = localStorage.getItem('userId');
@@ -54,8 +54,8 @@ export default function Home() {
 
   const handleEventRemove = (date,title) => {
     if (window.confirm("Are you sure you want to delete this event?")) {
-      const eventId = new Date(date).getTime().toString()+title;
-      console.log(eventId);
+      const eventId = new Date(day.year,day.month,currentDay).getTime().toString()+ title;
+      
       fetch(`http://localhost:4000/delete-event/${storedUserId}/${eventId}`, {
         method: 'DELETE',
         headers: { "Content-Type": "application/json" },
@@ -73,29 +73,26 @@ export default function Home() {
   };
   
   }
-/*
-  const handleEventDrop = (info) => {
-   
+  const handleEventDrop = (id, newDate,title) => {
     const updatedEvent = {
-      id: info.event.id,
-      title: info.event.title,
-      start: info.event.startStr,
-      end: info.event.endStr,
-      allDay: info.event.allDay,
+      id,
+      title:title,
+      date: formatDate(new Date( currentYear,currentMonth,newDate)),
     };
+   
 
-    fetch(`http://localhost:4000/update-event/${storedUserId}/${info.event.id}`, {
+    fetch(`http://localhost:4000/update-event/${storedUserId}/${id}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'},
-        credentials: 'include',
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
       body: JSON.stringify(updatedEvent),
     })
       .then((response) => {
         if (response.ok) {
           console.log('Event updated successfully');
           fetchEvents();
-          
         } else {
           console.error('Failed to update event');
         }
@@ -104,7 +101,6 @@ export default function Home() {
         console.error('Error updating event:', error);
       });
   };
-*/
 
   if (modal) {
     document.body.classList.add('active-modal');
@@ -172,9 +168,7 @@ export default function Home() {
    }).then((response)=>{
     if(response.ok){
       setTitle(''); 
-     
       fetchEvents();
-
     }
     
    })
@@ -192,7 +186,7 @@ export default function Home() {
         <div className="event-preview" key={event.id}>
           <div className="event-details">
             <h3>{event.title}</h3>
-            <h4>{event.start}</h4>
+            <h4>{event.date}</h4>
           </div>
         </div>
       ))}
@@ -218,7 +212,7 @@ export default function Home() {
     </div>
 
     
-    <Calendar year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleEventRemove}/>
+    <Calendar year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleEventRemove} handleEventDrop={handleEventDrop}/>
 
       
     </div>

@@ -163,7 +163,7 @@ app.post('/login', (req, res) => {
         const updatedData = req.body;
         
         console.log('Received updated data:',updatedData)
-        if (!updatedData.title || !updatedData.start) {
+        if ( !updatedData.date) {
           return res.status(400).send({ error: 'Missing required fields' });
         }
         
@@ -171,9 +171,8 @@ app.post('/login', (req, res) => {
           { _id: new ObjectId(userId), "events.id": eventId },
           { 
             $set: {
-              "events.$.title": updatedData.title,
-              "events.$.start": updatedData.start,
-              "events.$.end": updatedData.end,
+              "events.$.date": updatedData.date,
+              
             } 
           }
         );

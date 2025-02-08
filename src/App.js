@@ -5,7 +5,8 @@ import Home from "./pages/Home"
 import Login from "./pages/Login"
 import UserNotes from "./pages/UserNotes"
 import ProtectedRoute from './components/ProtectedRoute';
-
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import './App.css'
 import Register from "./pages/Register"
 
@@ -30,7 +31,9 @@ const router = createBrowserRouter(
 function App() {
   return (
     <AuthProvider>
+      <DndProvider backend={HTML5Backend}>
     <RouterProvider router={router} />
+    </DndProvider>
     </AuthProvider>
   );
 }

@@ -1,6 +1,11 @@
 import React from 'react';
+import { useDrag, useDrop } from 'react-dnd';
 
-function Calendar({ year, month, events, addNewEvent, deleteEvent }) {
+const ItemTypes = {
+  EVENT: 'event',
+};
+
+function Calendar({ year, month, events, addNewEvent, deleteEvent, handleEventDrop }) {
   const firstDayOfMonth = new Date(year, month, 1);
   const lastDayOfMonth = new Date(year, month + 1, 0);
   const numDaysInMonth = lastDayOfMonth.getDate();
@@ -65,20 +70,62 @@ function Calendar({ year, month, events, addNewEvent, deleteEvent }) {
   return (
     <div className="calendar-grid">
       {result.map((day, index) => (
-        <div className="calendar-cell" onClick={() => addNewEvent(day)} key={index}>
-          {day.inCurrentMonth ? (
-            <div className="day-number">
-              {day.isToday ? (  <div className="today-number">{day.date}</div> ) : ( <div className="day-number">{day.date}</div>  )}
-            </div>  ) : (<div className="day-number-not-in-the-month">{day.date}</div> )}
-          <div className="user-events">
-            {day.events.map((event, eventIndex) => (
-              <div className="event-item" key={eventIndex}onClick={(e) => {
-                  e.stopPropagation();
-                  deleteEvent(new Date(day.year, day.month, day.date),event.title);}}>{event.title}</div>
-            ))}
-          </div>
-        </div>
+        <DayCell key={index} day={day} addNewEvent={addNewEvent} deleteEvent={deleteEvent} handleEventDrop={handleEventDrop} />
       ))}
+    </div>
+  );
+}
+
+function DayCell({ day, addNewEvent, deleteEvent, handleEventDrop }) {
+  const [, drop] = useDrop({
+    accept: ItemTypes.EVENT,
+    drop: (item, monitor) => {
+      handleEventDrop(item.id, day.date, day.month, day.year);
+    },
+  });
+
+  return (
+    <div ref={drop} className="calendar-cell" onClick={() => addNewEvent(day)}>
+      {day.inCurrentMonth ? (
+        <div className="day-number">
+          {day.isToday ? (
+            <div className="today-number">{day.date}</div>
+          ) : (
+            <div className="day-number">{day.date}</div>
+          )}
+        </div>
+      ) : (
+        <div className="day-number-not-in-the-month">{day.date}</div>
+      )}
+      <div className="user-events">
+        {day.events.map((event, eventIndex) => (
+          <Event key={eventIndex} event={event} deleteEvent={deleteEvent} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Event({ event, deleteEvent }) {
+  const [{ isDragging }, drag] = useDrag({
+    type: ItemTypes.EVENT,
+    item: { id: event.id, date: event.date },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  return (
+    <div
+      ref={drag}
+      className="event-item"
+      style={{ opacity: isDragging ? 0.5 : 1 }}
+      onClick={(e) => {
+        e.stopPropagation();
+        deleteEvent(event.date, event.title);
+      }}
+    >
+      {event.title}
     </div>
   );
 }

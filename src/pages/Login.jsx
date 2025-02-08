@@ -61,7 +61,7 @@ export default function Login(){
            
           
          .catch ((error)=> {
-          console.error('Error during login:', error);
+         
           setError(error.message);
 
          })
