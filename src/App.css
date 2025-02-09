@@ -1,17 +1,20 @@
+
 :root {
   --primary: #979797bd;
   --secondary: #ffffff;
   --theme: #000000be;
   
 }
+
 body {
-  margin: 0;
+ 
   padding: 20px;
   font-family: "Poppins";
   background-image: url("../public/light-gray-abstract-background.jpg");
   background-size: cover;
   background-repeat: no-repeat;
- background-attachment: fixed;
+  background-attachment: fixed;
+
 }
 * {
 
@@ -268,9 +271,11 @@ body.active-modal {
 .close-modal:hover{
   background: #313131;
 }
+
 .home-container {
   display: flex; 
   gap: 20px; 
+  height: 82vh;
 }
 .all-events{
   flex: 1; 
@@ -291,6 +296,7 @@ margin-bottom: 20px;
   flex: 3; 
   padding: 10px; 
   color: #000000;
+ 
 }
 
 .event-preview {
@@ -475,14 +481,15 @@ color: #000000;
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr); 
- 
+  height: 90%;
   
 }
+
+
 .calendar-cell {
   position: relative; 
   border: 1px solid #000000;
   min-height: 6.5rem;
-  
   overflow-y: auto;
 }
 .day-number{

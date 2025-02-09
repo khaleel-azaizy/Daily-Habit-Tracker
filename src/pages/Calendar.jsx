@@ -80,7 +80,7 @@ function DayCell({ day, addNewEvent, deleteEvent, handleEventDrop }) {
   const [, drop] = useDrop({
     accept: ItemTypes.EVENT,
     drop: (item, monitor) => {
-      handleEventDrop(item.id, day.date, day.month, day.year);
+      handleEventDrop(item.id, day.date, day.month, day.year,item.title);
     },
   });
 
@@ -122,7 +122,7 @@ function Event({ event, deleteEvent }) {
       style={{ opacity: isDragging ? 0.5 : 1 }}
       onClick={(e) => {
         e.stopPropagation();
-        deleteEvent(event.date, event.title);
+        deleteEvent(event.date, event.id);
       }}
     >
       {event.title}

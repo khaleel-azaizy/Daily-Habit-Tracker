@@ -52,18 +52,17 @@ export default function Home() {
   };
 
 
-  const handleEventRemove = (date,title) => {
+  const handleEventRemove = (date,id) => {
     if (window.confirm("Are you sure you want to delete this event?")) {
-      const eventId = new Date(day.year,day.month,currentDay).getTime().toString()+ title;
-      
-      fetch(`http://localhost:4000/delete-event/${storedUserId}/${eventId}`, {
+     
+      fetch(`http://localhost:4000/delete-event/${storedUserId}/${id}`, {
         method: 'DELETE',
         headers: { "Content-Type": "application/json" },
         credentials: 'include',
         
       }).then(() => {
         console.log('Event deleted');
-        setEvents((prevEvents) => prevEvents.filter(event => event.id !== eventId));
+        setEvents((prevEvents) => prevEvents.filter(event => event.id !== id));
 
       }).catch(err => {
         console.error('Error deleting event:', err);
@@ -73,11 +72,11 @@ export default function Home() {
   };
   
   }
-  const handleEventDrop = (id, newDate,title) => {
+  const handleEventDrop = (id, date, month, year,title) => {
     const updatedEvent = {
       id,
       title:title,
-      date: formatDate(new Date( currentYear,currentMonth,newDate)),
+      date: formatDate(new Date( year,month,date)),
     };
    
 
@@ -156,7 +155,7 @@ export default function Home() {
     setModal(false); 
     
     const newEvent = {
-      id: new Date(day.year,day.month,currentDay).getTime().toString()+ title,
+      id: new Date(day.year,day.month,day.date).getTime().toString()+ title,
       title,
       date: formatDate(new Date(day.year,day.month, currentDay)),
     };

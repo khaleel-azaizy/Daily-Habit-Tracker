@@ -171,6 +171,7 @@ app.post('/login', (req, res) => {
           { _id: new ObjectId(userId), "events.id": eventId },
           { 
             $set: {
+              
               "events.$.date": updatedData.date,
               
             } 
