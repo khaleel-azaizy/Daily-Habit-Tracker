@@ -39,7 +39,7 @@ body {
   color: black;
 }
 header h1 {
-  font-size: 30px;
+  font-size: 2rem;
   text-align: left;
   margin-bottom: 10px;
   color: var(--theme);
@@ -70,19 +70,20 @@ header nav a.active:hover{
 
 }
 .navigation .logout{
-  font-size: 17px;
+  font-size: 1rem;
   position: absolute;
   font-family: "Poppins";
   transition: 0.3s;
   background:#00000073 ;
   border: none;
   color: #000000;
-  width: 4rem;
+  width: 3rem;
   padding: 5px;
   border-radius: 20px;
   margin-right: 10px;
   cursor: pointer;
   right: 0;
+
 }
 .navigation .logout:hover{
   background:#000000af;
@@ -244,7 +245,7 @@ body.active-modal {
 .close-modal {
   background:var(--theme);
   color: #ffffff;
-  font-size: 15px;
+  font-size: 1rem;
   font-weight: 750;
   display: flex;
   padding: 15px;
@@ -256,7 +257,7 @@ body.active-modal {
 .submit-modal{
   background:var(--secondary);
   color: black;
-  font-size: 15px;
+  font-size: 1rem;
   font-weight: 750;
   display: flex;
   padding: 15px;
@@ -274,24 +275,34 @@ body.active-modal {
 
 .home-container {
   display: flex; 
-  gap: 20px; 
+  gap: 1rem; 
   height: 82vh;
 }
 .all-events{
   flex: 1; 
-  max-width: 300px; 
   overflow-y: auto; 
+  max-width: 300px;
   color: white;
   border-right: 1px solid #ddd;
-  background-color: #474747cb;
+  background-color: var(--primary);
   border-radius: 15px;
   padding: 10px;
 }
 .all-events h2{
 text-align: center;
 margin-bottom: 20px;
+font-size: 1.5em;
 
 }
+.all-events h3 {
+  font-size: 1.2em;
+
+}
+.all-events h4 {
+  font-size: 1em;
+
+}
+
 .calendar-container {
   flex: 3; 
   padding: 10px; 
@@ -304,7 +315,7 @@ margin-bottom: 20px;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
-  background-color: var(--primary);
+  background-color: #31313191;
 }
 
 .event-preview h3 {
@@ -334,7 +345,6 @@ margin-bottom: 20px;
  border-radius: 8px;
  border: 1px solid #ffffff6c;
  display: flex;
- position: fixed;
  bottom: 0;
  left: 0;
  right: 0;
@@ -466,8 +476,8 @@ color: #000000;
   margin-top: 20px;
   display: flex;
   width: 100%;
-  gap: 30px;
-  font-size: 1.5em;
+  gap: 1rem;
+  font-size: 1.5rem;
   font-weight: 500;
   border-bottom: 2px solid #000000;
   
@@ -495,13 +505,12 @@ color: #000000;
 .day-number{
   font-size: 1.2em;
   font-weight: 500;
-  
-  margin: 5px 3px;
+  margin-left: 3px;
+  margin: 3px 3px;
 }
 .day-number-not-in-the-month{
   font-size: 1.2em;
   font-weight: 500;
-  
   margin: 5px 3px;
   color: #0000006b;
 }
@@ -539,9 +548,10 @@ color: #000000;
   border-radius: 5px;
   padding: 5px;
   margin: 5px;
-  max-width: 12px;
+  width: 1em;
   color: white;
 }
+
 .user-events{
   display: flex;
   flex-direction: column;
@@ -561,4 +571,25 @@ color: #000000;
   background-color: var(--theme);
   color: white;
   cursor: pointer;
+}
+
+@media  (max-width: 1000px) {
+  
+  .home-container {
+    flex-direction: column;
+    height: auto; 
+  }
+
+  .all-events {
+    max-width: 100%; 
+    margin-top: 20px; 
+  }
+
+  .calendar-container {
+    
+    width: 100%; 
+  }
+  header h1 {
+    display: none;
+  }
 }

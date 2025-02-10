@@ -179,17 +179,7 @@ export default function Home() {
     <div className="home">
  
   <div className="home-container">
-    <div className="all-events">
-      <h2>upcoming Events</h2>
-      {upcomingEvents.map((event) => (
-        <div className="event-preview" key={event.id}>
-          <div className="event-details">
-            <h3>{event.title}</h3>
-            <h4>{event.date}</h4>
-          </div>
-        </div>
-      ))}
-    </div>
+    
 
     <div className="calendar-container">
     <div className="calendar-header">
@@ -212,8 +202,20 @@ export default function Home() {
 
     
     <Calendar year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleEventRemove} handleEventDrop={handleEventDrop}/>
-
+    
       
+    </div>
+    
+    <div className="all-events">
+      <h2>upcoming Events</h2>
+      {upcomingEvents.map((event) => (
+        <div className="event-preview" key={event.id}>
+          <div className="event-details">
+            <h3>{event.title}</h3>
+            <h4>{event.date}</h4>
+          </div>
+        </div>
+      ))}
     </div>
   </div>
   
