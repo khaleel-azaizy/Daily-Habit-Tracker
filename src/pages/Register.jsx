@@ -45,9 +45,9 @@ export default function Register(){
             <h2>Welcome to Daily Habit</h2>
            
              <form onSubmit={handleSubmit}>
-                 <label> User Email</label>
+                 <label>Email</label>
                 <input type="text" required value={email}  onChange={(e)=>setEmail(e.target.value)}/> 
-                <label> User Name</label>
+                <label>Name</label>
                 <input type="text" required value={name}  onChange={(e)=>setName(e.target.value)}/> 
                 <label> Password</label>
                 <input type="password" required value={password}  onChange={(e)=>setPassword(e.target.value)}/> 
@@ -55,8 +55,8 @@ export default function Register(){
                 {error && <p style={{ color: 'red' ,textAlign:'center'}}>{error}</p>}
              </form>
              <div className="login-her">
-             <h4>Already have an acount </h4>
-             <Link to="/login">Login her!</Link>
+             <h4>Already have an acount? </h4>
+             <Link to="/login">Login here!</Link>
              </div>
              
         </div>

@@ -78,7 +78,7 @@ export default function Login(){
            
              <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label> User Email</label>
+                <label>Email</label>
                 <input type="text" required value={email} placeholder="Email" onChange={(e)=>setEmail(e.target.value)}/> 
                 <label> Password</label>
                 <input type="password" required value={password} placeholder="Password"  onChange={(e)=>setPassword(e.target.value)}/> 
@@ -88,8 +88,8 @@ export default function Login(){
              </form>
             
              <div className="regestir-her">
-             <h4>You dont have an acount </h4>
-             <Link to="/register">Register her!</Link>
+             <h4>You dont have an acount? </h4>
+             <Link to="/register">Register here!</Link>
              </div>
             
         </div>)}
