@@ -593,3 +593,47 @@ color: #000000;
     display: none;
   }
 }
+
+.yearly-calendar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 1.5rem; 
+  padding: 10px; 
+  font-size: 0.8rem;
+  
+}
+.yearly-calendar .my-calendar {
+  width: 6rem;
+  font-size: 1rem;
+  font-weight: 800;
+  gap: 1.4rem;
+  border: none;
+  margin-left: 5px;
+}
+.yearly-calendar .calendar-cell{
+  min-height: 2.05rem;
+  border: none;
+  text-align: center;
+  
+}
+.yearly-calendar .calendar-cell .user-events{
+  justify-content: center;
+  align-items: center;
+  max-height: 15px;
+  overflow: hidden;
+ 
+}
+.yearly-calendar .calendar-cell .user-events .event-item{
+  border-radius:5px ;
+  position:absolute;
+  background-color: #9b0a0a73;
+  width: 10px;
+  max-height: 1px;
+  overflow: hidden;
+  color: transparent;
+}
+.yearly-calendar .yearly-calendar-header{
+  
+  text-align: center;
+ 
+}

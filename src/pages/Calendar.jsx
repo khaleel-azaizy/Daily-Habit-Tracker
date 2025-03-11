@@ -68,11 +68,24 @@ function Calendar({ year, month, events, addNewEvent, deleteEvent, handleEventDr
   });
 
   return (
+    <div>
+      <div  className="my-calendar">
+    <span className="days">Sun</span>
+    <span className="days">Mon</span>
+    <span className="days">Tue</span>
+    <span className="days">Wed</span>
+    <span className="days">Thu</span>
+    <span className="days">Fri</span>
+    <span className="days">Sat</span>
+ 
+    </div>
     <div className="calendar-grid">
       {result.map((day, index) => (
         <DayCell key={index} day={day} addNewEvent={addNewEvent} deleteEvent={deleteEvent} handleEventDrop={handleEventDrop} />
       ))}
     </div>
+    </div>
+   
   );
 }
 

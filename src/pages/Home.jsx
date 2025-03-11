@@ -1,5 +1,6 @@
 import { useState,useEffect } from "react";
 import Calendar from "./Calendar";
+import YearlyCalendar from "./YearlyCalendar";
 export default function Home() {
   const [modal, setModal] = useState(false);
   const [title, setTitle] = useState('');
@@ -11,6 +12,7 @@ export default function Home() {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentDay, setCurrentDay] = useState(new Date().getDate());
   const [day, setDay] = useState({});
+  const [fullYear, setFullYear] = useState(false);
   useEffect(() => {
     
     fetch(`http://localhost:4000/get-events/${storedUserId}`,{credentials:'include'}) 
@@ -130,6 +132,13 @@ export default function Home() {
     setCurrentMonth(new Date().getMonth());
   }
 
+  const goToPreviousYear = () => {
+    setCurrentYear(currentYear - 1);  
+  };
+  const goToNextYear = () => {
+    setCurrentYear(currentYear + 1);
+  };
+
   const monthName = new Date(currentYear, currentMonth).toLocaleString("default", {
     month: "long",
   });
@@ -174,6 +183,14 @@ export default function Home() {
 
    
   }
+
+  const PresentFullYear = () => {
+    setFullYear(true);
+  }
+ 
+  const PresentFullMonth = () => {
+    setFullYear(false);
+  }
   
   return (
     <div className="home">
@@ -181,31 +198,35 @@ export default function Home() {
   <div className="home-container">
     
 
-    <div className="calendar-container">
+    {!fullYear &&<div className="calendar-container">
     <div className="calendar-header">
     <button onClick={goToPreviousMonth}>Prev</button>
     <button onClick={goToNextMonth}>Next</button>
     <h2>{monthName} {currentYear}</h2>
+    <button className="year-mounth-button" onClick={PresentFullYear}>Yearly</button>
+    <button className="year-mounth-button" onClick={PresentFullMonth}>Monthly</button>
     <button onClick={gotToThisDay}>Today</button>
     </div>
-   
-    <div  className="my-calendar">
-    <span className="days">Sun</span>
-    <span className="days">Mon</span>
-    <span className="days">Tue</span>
-    <span className="days">Wed</span>
-    <span className="days">Thu</span>
-    <span className="days">Fri</span>
-    <span className="days">Sat</span>
- 
-    </div>
-
-    
     <Calendar year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleEventRemove} handleEventDrop={handleEventDrop}/>
     
-      
-    </div>
     
+    </div>}
+
+    {fullYear && <div className="calendar-container">
+    <div className="calendar-header">
+    <button onClick={goToPreviousYear}>Prev</button>
+    <button onClick={goToNextYear}>Next</button>
+    <h2> {currentYear}</h2>
+    <button className="year-mounth-button" onClick={PresentFullYear}>Yearly</button>
+    <button className="year-mounth-button" onClick={PresentFullMonth}>Monthly</button>
+    <button onClick={gotToThisDay}>Today</button>
+    
+    </div>
+    <YearlyCalendar year={currentYear} events={events}/>
+    </div>
+    }
+
+    {!fullYear &&
     <div className="all-events">
       <h2>upcoming Events</h2>
       {upcomingEvents.map((event) => (
@@ -217,8 +238,9 @@ export default function Home() {
         </div>
       ))}
     </div>
+    }
   </div>
-  
+    
   {modal && (
     <div className="modal">
       <div className="overlay"></div>
