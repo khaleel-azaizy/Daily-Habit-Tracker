@@ -222,7 +222,7 @@ export default function Home() {
     <button onClick={gotToThisDay}>Today</button>
     
     </div>
-    <YearlyCalendar year={currentYear} events={events}/>
+    <YearlyCalendar year={currentYear} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleEventRemove} handleEventDrop={handleEventDrop}/>
     </div>
     }
 

@@ -41,6 +41,7 @@ body {
 header h1 {
   font-size: 2rem;
   text-align: left;
+  position:absolute;
   margin-bottom: 10px;
   color: var(--theme);
   border-bottom: #000000 3px solid;
@@ -572,7 +573,89 @@ color: #000000;
   cursor: pointer;
 }
 
-@media  (max-width: 1000px) {
+
+
+.yearly-calendar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 1.5rem; 
+  padding: 1rem; 
+  font-size: 0.8rem;
+  
+}
+.yearly-calendar .my-calendar {
+  width: 100%;
+  font-size: 1.3em;
+  font-weight: 800;
+  gap: 0.8em;
+  border: none;
+}
+
+.yearly-calendar .calendar-cell{
+  min-height: 3em;
+  border: none;
+  text-align: center;
+  font-size: 1em;
+  border-radius: 7px;
+  overflow: hidden;
+}
+.yearly-calendar .calendar-cell .user-events{
+  justify-content: center;
+  align-items: center;
+  max-height: 1.5em;
+  overflow: hidden;
+  transition:  1s ease-out;
+  
+}
+.yearly-calendar .calendar-cell .user-events .event-item{
+  border-radius:5px ;
+  position:relative;
+  background-color: var(--theme);
+  width:50%;
+  z-index: 999;
+  margin-top: 0;
+  max-height: 0.1rem;
+  overflow: visible;
+  color: transparent;
+  transition:  0.7s ease-in-out; 
+ 
+}
+.yearly-calendar .yearly-calendar-header{
+  
+  text-align: center;
+ 
+}
+.yearly-calendar .calendar-cell .user-events:hover{
+  max-height: 10em;
+  border-radius: 8px;
+  position: fixed;
+  transform: translatey(10%);
+  background-color: var(--primary);
+  min-width: 6em;
+  min-height: 7em;
+  z-index: 999;
+  overflow: visible;
+}
+
+.yearly-calendar .calendar-cell .user-events .event-item:hover{
+  width: 80%;
+  z-index: 999;
+  color: white;
+  font-size: larger;
+  max-height: 100px;
+  border-radius: 8px;
+  
+}
+.yearly-calendar .calendar-cell .today-number{
+   background-color: transparent;
+   padding: 0;
+   margin: 0 auto;
+   font-size: 1.2em;
+   font-weight: 800;
+   color: rgb(207, 2, 2);
+ }
+
+ @media  (max-width: 1000px) {
   
   .home-container {
     flex-direction: column;
@@ -592,48 +675,10 @@ color: #000000;
   header h1 {
     display: none;
   }
-}
-
-.yearly-calendar {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); 
-  gap: 1.5rem; 
-  padding: 10px; 
-  font-size: 0.8rem;
-  
-}
-.yearly-calendar .my-calendar {
-  width: 6rem;
-  font-size: 1rem;
-  font-weight: 800;
-  gap: 1.4rem;
-  border: none;
-  margin-left: 5px;
-}
-.yearly-calendar .calendar-cell{
-  min-height: 2.05rem;
-  border: none;
-  text-align: center;
-  
-}
-.yearly-calendar .calendar-cell .user-events{
-  justify-content: center;
-  align-items: center;
-  max-height: 15px;
-  overflow: hidden;
- 
-}
-.yearly-calendar .calendar-cell .user-events .event-item{
-  border-radius:5px ;
-  position:absolute;
-  background-color: #9b0a0a73;
-  width: 10px;
-  max-height: 1px;
-  overflow: hidden;
-  color: transparent;
-}
-.yearly-calendar .yearly-calendar-header{
-  
-  text-align: center;
- 
+  .yearly-calendar {
+    
+    grid-template-columns: repeat(2, 1fr); 
+   
+    
+  }
 }
