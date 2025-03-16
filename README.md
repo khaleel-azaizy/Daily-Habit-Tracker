@@ -42,7 +42,7 @@ Make sure you have the following installed on your machine:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/khaleel-azaizy/daily-habit-tracker.git
+git clone https://github.com/khaleel-azaizy/Daily-Habit-Tracker.git
 cd daily-habit-tracker
 ```
 2. Install the dependencies:
