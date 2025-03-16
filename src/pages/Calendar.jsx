@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-
+import { useState } from 'react';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 const ItemTypes = {
   EVENT: 'event',
 };
@@ -12,6 +13,7 @@ function Calendar({ year, month, events, addNewEvent, deleteEvent, handleEventDr
   const startDay = firstDayOfMonth.getDay();
   const prevMonthLastDay = new Date(year, month, 0).getDate();
   const result = [];
+ 
 
   for (let i = 0; i < startDay; i++) {
     const dayNum = prevMonthLastDay - (startDay - 1) + i;
@@ -66,9 +68,9 @@ function Calendar({ year, month, events, addNewEvent, deleteEvent, handleEventDr
       }
     });
   });
-
+  
   return (
-    <div>
+    <div className="calendar">
       <div  className="my-calendar">
     <span className="days">Sun</span>
     <span className="days">Mon</span>
@@ -90,6 +92,8 @@ function Calendar({ year, month, events, addNewEvent, deleteEvent, handleEventDr
 }
 
 function DayCell({ day, addNewEvent, deleteEvent, handleEventDrop }) {
+  
+
   const [, drop] = useDrop({
     accept: ItemTypes.EVENT,
     drop: (item, monitor) => {
@@ -99,6 +103,7 @@ function DayCell({ day, addNewEvent, deleteEvent, handleEventDrop }) {
 
   return (
     <div ref={drop} className="calendar-cell" onClick={() => addNewEvent(day)}>
+      
       {day.inCurrentMonth ? (
         <div className="day-number">
           {day.isToday ? (
@@ -113,14 +118,15 @@ function DayCell({ day, addNewEvent, deleteEvent, handleEventDrop }) {
       <div className="user-events">
        
         {day.events.map((event, eventIndex) => (
-          <Event key={eventIndex} event={event} deleteEvent={deleteEvent} />
+          <Event key={eventIndex} event={event} deleteEvent={deleteEvent} addNewEvent={addNewEvent} />
         ))}
+        {day.events.length > 0 && <div className="day-with-event"></div>}
       </div>
     </div>
   );
 }
 
-function Event({ event, deleteEvent }) {
+function Event({ event, deleteEvent, addNewEvent }) {
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.EVENT,
     item: { id: event.id, date: event.date },
@@ -128,18 +134,28 @@ function Event({ event, deleteEvent }) {
       isDragging: monitor.isDragging(),
     }),
   });
+  const [deletemodal, setDeleteModal] = useState(false);
+  const handleClick = (e) => {
+    e.stopPropagation();
+    setDeleteModal(!deletemodal);
+  };
 
   return (
     <div
       ref={drag}
       className="event-item"
       style={{ opacity: isDragging ? 0.5 : 1 }}
-      onClick={(e) => {
-        e.stopPropagation();
-        deleteEvent(event.date, event.id);
-      }}
+      onClick={handleClick}
     >
-      {event.title}
+       {event.title}
+        {deletemodal && 
+          <button className="delete-button" onClick={(e) => {
+          e.stopPropagation();
+          deleteEvent(event.id);
+          }} >
+           <i className="fa-solid fa-trash"></i>
+          </button>}
+     
     </div>
   );
 }

@@ -4,7 +4,6 @@ import YearlyCalendar from "./YearlyCalendar";
 export default function Home() {
   const [modal, setModal] = useState(false);
   const [title, setTitle] = useState('');
-  
   const [events, setEvents] = useState([]);
   const [upcomingEvents,setUpcomingevents]=useState([]);
   const storedUserId = localStorage.getItem('userId');
@@ -54,10 +53,13 @@ export default function Home() {
     setModal(false);
     setTitle('');
   };
-
+ const handleDeleteClick = (id) => {
+  handleEventRemove(id);
+  }
+ 
 
   const handleEventRemove = (id) => {
-    if (window.confirm("Are you sure you want to delete this event?")) {
+    
      
       fetch(`http://localhost:4000/delete-event/${storedUserId}/${id}`, {
         method: 'DELETE',
@@ -75,7 +77,7 @@ export default function Home() {
     
   };
   
-  }
+  
   const handleEventDrop = (id, date, month, year,title) => {
     const updatedEvent = {
       id,
@@ -104,12 +106,6 @@ export default function Home() {
         console.error('Error updating event:', error);
       });
   };
-
-  if (modal) {
-    document.body.classList.add('active-modal');
-  } else {
-    document.body.classList.remove('active-modal');
-  }
 
   const goToPreviousMonth = () => {
     if (currentMonth === 0) {
@@ -216,7 +212,7 @@ export default function Home() {
     <button className={monthButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullMonth}>Monthly</button>
    
     </div>
-    <Calendar year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleEventRemove} handleEventDrop={handleEventDrop}/>
+    <Calendar year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleDeleteClick} handleEventDrop={handleEventDrop}/>
     
     
     </div>}
@@ -235,7 +231,7 @@ export default function Home() {
    
     
     </div>
-    <YearlyCalendar year={currentYear} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleEventRemove} handleEventDrop={handleEventDrop}/>
+    <YearlyCalendar year={currentYear} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleDeleteClick} handleEventDrop={handleEventDrop}/>
     </div>
     }
 
