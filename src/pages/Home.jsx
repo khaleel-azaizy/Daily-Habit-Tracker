@@ -56,7 +56,7 @@ export default function Home() {
   };
 
 
-  const handleEventRemove = (date,id) => {
+  const handleEventRemove = (id) => {
     if (window.confirm("Are you sure you want to delete this event?")) {
      
       fetch(`http://localhost:4000/delete-event/${storedUserId}/${id}`, {
@@ -207,8 +207,8 @@ export default function Home() {
     {!fullYear &&<div className="calendar-container">
     <div className="calendar-header">
     <div className="back-forward-button-holder">
-    <button  className="back-button" onClick={goToPreviousYear}></button>
-    <button  className="forward-button" onClick={goToNextYear}></button>
+    <button  className="back-button" onClick={goToPreviousMonth}></button>
+    <button  className="forward-button" onClick={goToNextMonth}></button>
     </div>
     <button onClick={gotToThisDay}>Today</button>
     <h2>{monthName} {currentYear}</h2>
