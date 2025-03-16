@@ -49,10 +49,15 @@ cd daily-habit-tracker
 ```bash
 npm install
 ```
-Available Scripts
+3. Runing The App:
 In the project directory, you can run:
 ```bash
-npm start
+npm run start
+```
+4. Running The Back-End:
+```bash
+cd server
+nodemon Router.js
 ```
 Runs the app in the development mode.
 Open http://localhost:3000 to view it in your browser.
