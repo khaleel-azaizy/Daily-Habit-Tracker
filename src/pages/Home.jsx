@@ -13,6 +13,8 @@ export default function Home() {
   const [currentDay, setCurrentDay] = useState(new Date().getDate());
   const [day, setDay] = useState({});
   const [fullYear, setFullYear] = useState(false);
+  const [yearButton, setYearButton] = useState(null);
+  const [monthButton, setMonthButton] = useState(true);
   useEffect(() => {
     
     fetch(`http://localhost:4000/get-events/${storedUserId}`,{credentials:'include'}) 
@@ -186,10 +188,14 @@ export default function Home() {
 
   const PresentFullYear = () => {
     setFullYear(true);
+    setYearButton(true);
+    setMonthButton(false);
   }
  
   const PresentFullMonth = () => {
     setFullYear(false);
+    setMonthButton(true);
+    setYearButton(false);
   }
   
   return (
@@ -200,12 +206,15 @@ export default function Home() {
 
     {!fullYear &&<div className="calendar-container">
     <div className="calendar-header">
-    <button onClick={goToPreviousMonth}>Prev</button>
-    <button onClick={goToNextMonth}>Next</button>
-    <h2>{monthName} {currentYear}</h2>
-    <button className="year-mounth-button" onClick={PresentFullYear}>Yearly</button>
-    <button className="year-mounth-button" onClick={PresentFullMonth}>Monthly</button>
+    <div className="back-forward-button-holder">
+    <button  className="back-button" onClick={goToPreviousYear}></button>
+    <button  className="forward-button" onClick={goToNextYear}></button>
+    </div>
     <button onClick={gotToThisDay}>Today</button>
+    <h2>{monthName} {currentYear}</h2>
+    <button  className={yearButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullYear}>Yearly</button>
+    <button className={monthButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullMonth}>Monthly</button>
+   
     </div>
     <Calendar year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleEventRemove} handleEventDrop={handleEventDrop}/>
     
@@ -214,12 +223,16 @@ export default function Home() {
 
     {fullYear && <div className="calendar-container">
     <div className="calendar-header">
-    <button onClick={goToPreviousYear}>Prev</button>
-    <button onClick={goToNextYear}>Next</button>
-    <h2> {currentYear}</h2>
-    <button className="year-mounth-button" onClick={PresentFullYear}>Yearly</button>
-    <button className="year-mounth-button" onClick={PresentFullMonth}>Monthly</button>
+    <div className="back-forward-button-holder">
+    <button  className="back-button" onClick={goToPreviousYear}></button>
+    <button  className="forward-button" onClick={goToNextYear}></button>
+    </div>
+   
     <button onClick={gotToThisDay}>Today</button>
+    <h2> {currentYear}</h2>
+    <button  className={yearButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullYear}>Yearly</button>
+    <button className={monthButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullMonth}>Monthly</button>
+   
     
     </div>
     <YearlyCalendar year={currentYear} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleEventRemove} handleEventDrop={handleEventDrop}/>

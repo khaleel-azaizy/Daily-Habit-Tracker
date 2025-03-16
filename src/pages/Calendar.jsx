@@ -111,6 +111,7 @@ function DayCell({ day, addNewEvent, deleteEvent, handleEventDrop }) {
         <div className="day-number-not-in-the-month">{day.date}</div>
       )}
       <div className="user-events">
+       
         {day.events.map((event, eventIndex) => (
           <Event key={eventIndex} event={event} deleteEvent={deleteEvent} />
         ))}
