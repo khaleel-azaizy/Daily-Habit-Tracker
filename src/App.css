@@ -635,17 +635,18 @@ color: #000000;
 }
 
 .yearly-calendar {
-  display: flex;
-  flex-wrap: wrap; 
+  display: grid ;
+  grid-template-columns:repeat(4,1fr);
   justify-content: center;
   gap: 1.5rem; 
   font-size: 1rem;
-
+  margin-top: 0.5rem;
 }
 .yearly-calendar .my-calendar {
   font-size: 1.2em;
   font-weight: 800;
   border: none;
+ 
 }
 
 .yearly-calendar .calendar-cell{
@@ -670,6 +671,9 @@ color: #000000;
   
   text-align: center;
  
+}
+.yearly-calendar .yearly-calendar-header h2{
+  margin-top: 1rem;
 }
 .yearly-calendar .calendar-cell .day-with-event{
   background-color: #000000;
@@ -720,8 +724,6 @@ color: #000000;
    color: rgb(207, 2, 2);
  }
  .home .yearly-calendar .calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr); 
   height: 25vh;
  }
 .home .year-mounth-activebutton{
@@ -753,8 +755,13 @@ color: #000000;
   border-radius: 0;
 }
 
+@media (max-width:1546px) {
+  .yearly-calendar {
 
- @media  (max-width: 1000px) {
+    grid-template-columns: repeat(3, 1fr); 
+  }
+}
+ @media  (max-width: 1114px) {
   
   .home-container {
     flex-direction: column;
