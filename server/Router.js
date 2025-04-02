@@ -116,19 +116,38 @@ app.post('/login', (req, res) => {
         const userId = req.params.userId;
         const eventData = req.body;
         console.log('Received event data:', eventData);
-        await db.collection('Users').updateOne(
-          { _id: new ObjectId(userId) },
-          { $push: { events: { eventId: new ObjectId(), ...eventData } } }
-        );
+       
+          for(let i=0;i<eventData.length;i++){
+          await db.collection('Users').updateOne(
+            { _id: new ObjectId(userId) },
+            { $push: { events: { eventId: new ObjectId(), ...eventData[i] } } }
+          );
+        }
+       
     
         res.status(200).send({ message: 'Event added successfully' });
       } catch (error) {
         console.error('Error adding event:', error);
-        res.status(500).send({ error: 'Failed to add event' });
+        res.status(500).send({ error: 'Failed to add event' });get-one-time-events
       }
     });
 
-    
+    app.get('/get-one-time-events/:userid', auth, async (req, res) => {
+      try {
+       
+        const userId = req.params.userid;
+        const user = await db.collection('Users').findOne({ _id: new ObjectId(userId) });
+        if (user && user.events) {
+          const oneTimeEvents = user.events.filter(event => event.isPermanent === false);
+          res.status(200).json(oneTimeEvents);
+        } else {
+          res.status(404).json({ error: 'User or events not found' });
+        }
+      } catch (error) {
+        console.error('Error fetching one-time events:', error);
+        res.status(500).json({ error: 'Failed to fetch one-time events' });
+      }
+    });
   
     app.get('/get-events/:userid',auth, async (req, res) => {
       try {

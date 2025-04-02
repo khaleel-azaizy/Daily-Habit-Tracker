@@ -12,7 +12,7 @@ const monthName = ['January','February','March','April','May','June','July','Aug
   return (
     <div className="yearly-calendar">
      {FullYear.map((month) => (
-        <div className="yearly-calendar-header">
+        <div key={month} className="yearly-calendar-header">
         <h2>{monthName[month]}</h2>
        <Calendar key={month} year={year} month={month} events={events} addNewEvent={addNewEvent} deleteEvent={deleteEvent} handleEventDrop={handleEventDrop}/>
      </div>

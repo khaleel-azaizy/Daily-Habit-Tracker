@@ -71,6 +71,7 @@ export default function UserNotes(){
     
     return(
         <div className="user-tasks">
+        <h1>Notes</h1>
            <div className="all-notes">
        {notes.map((note) => (
         <div className="notes-preview" key={note.noteId}>
@@ -83,10 +84,6 @@ export default function UserNotes(){
         </div>
       ))}
     </div>
-
-
-
-       
       <form className="note-content" onSubmit={handleSubmit}>
         <input
           type="text"

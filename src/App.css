@@ -14,7 +14,7 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-
+  overflow-x: hidden;
 }
 * {
 
@@ -25,88 +25,131 @@ button {
   cursor: pointer;
   
 }
-
-
+.navigation-sidebar{
+  display: flex;
+  flex-direction: column; 
+  position: fixed; 
+  top: 0;
+  left: 0;
+  height: 100vh; 
+  width: 155px; 
+  margin-bottom: 500px;
+  background-color: var(--theme); 
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  overflow-y: auto; 
+}
 .nav-links {
   display: flex;
-  flex-grow: 1; 
-  justify-content: space-between; 
-  flex-direction: column; 
-  align-items: center; 
-  
+  flex-direction: column;
+  margin-top: 2rem;
+  text-align: center;
+  width: 100%;
 }
-.center-links {
-  display: flex;
-  gap: 20px; 
-  top: 0;
-}
-.center-links a{
-  color: black;
-}
-header h1 {
-  font-size: 2rem;
-  text-align: left;
-  position:absolute;
-  margin-bottom: 10px;
-  color: var(--theme);
-  border-bottom: #000000 3px solid;
+.navigation-container .navigation-header{
+ display: flex;
+ align-items: center;
+  width: 19rem;
 }
 
-header nav a{
-  text-decoration: none;
-  padding: 6px;
-  background: #6161616e;
-  border-radius: 4px;
+.navigation-container .sidebar-toggle-button{
+  background: var(--theme);
+  border-radius: 5px;
+  border: none;
+  color: rgb(255, 255, 255);
+  width: 2.2rem;
+  height: 2.2rem;
+  font-size: 1.5rem;
+  margin: 10px;
+  position: fixed; 
+  top: 0px; 
+  left: 0px; 
+  z-index: 1100; 
   transition: 0.3s;
 }
-header nav a.active {
-  background: var(--theme);
-  color: white;
-}
-header nav a:hover{
-  color: white;
-  background:  var(--theme);
-}
-header nav a.active:hover{
-  background:  var(--theme);
-}
-.navigation .header{
-  display: flex;
- 
-
-}
-.navigation .logout{
-  font-size: 1rem;
-  position: absolute;
-  transition: 0.3s ease-in-out;
-  background:rgba(0, 0, 0, 0.178);
+.navigation-container .sidebar-toggle-button-open{
+  background: var(--secondary);
+  border-radius: 5px;
   border: none;
-  color: #000000;
-  width: 2rem;
-  padding: 5px;
-  border-radius: 20px;
-  margin-right: 10px;
-  cursor: pointer;
-  right: 0;
-
+  color: black;
+  width: 2.2rem;
+  height: 2.2rem;
+  font-size: 1.5rem;
+  margin: 10px;
+  position: fixed; 
+  top: 0px; 
+  left: 0px; 
+  z-index: 1100; 
+  transition: 0.3s;
 }
-.navigation .logout:hover{
-  background:#00000039;
+.navigation-container .sidebar-toggle-button-open:hover{
+  background: var(--secondary);
+  color: black;
+  scale: 1.1;
+}
+.navigation-container .sidebar-toggle-button:hover{
+  background: #000000;
+  color: white;
   box-shadow: #00000054 0px 0px 10px 4px;
+  scale: 1.1;
+}
+.nav-links a {
+  color: var(--secondary);
+  text-decoration: none;
+  padding: 10px 15px;
+  margin: 5px 0;
+  border-radius: 5px;
+  font-size: 1rem; 
+  font-weight: 600; 
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
 }
 
-main {
-  margin: 40px auto;
+.nav-links a:hover {
+  background-color: var(--secondary);
+  color: var(--theme);
+  transform: scale(1.05); 
 }
+
+
+.navigation-sidebar .logout {
+  font-size: 1rem;
+  transition: 0.3s ease-in-out;
+  background: rgba(236, 236, 236, 0);
+  border: none;
+  color: #ffffff;
+  margin-top: 1rem;
+  padding: 8px; 
+  margin-left: 2rem;
+  width: 50%;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.navigation-sidebar .logout:hover {
+  background: #ffffff;
+  color: #000000;
+  box-shadow: #00000054 0px 0px 10px 4px;
+  transform: scale(1.1); 
+}
+
+
 .home{
   margin: 10px;
+  margin-top: 3rem;
 }
+.extra{
+ width: 10%;
 
+}
 
 .home .title{
   text-align: center;
 }
-
+.home .year-title{
+  text-align: center;
+  
+}
 .login {
   box-sizing: border-box;
   align-items: center;
@@ -145,6 +188,9 @@ main {
   border-radius: 6px;
   box-sizing: border-box;
   
+}
+input:focus{
+  height:2.2rem;
 }
 
 .login button{
@@ -217,7 +263,7 @@ body.active-modal {
 
 }
 .overlay {
-  background-color: #00000054;
+  background-color: #0000008c;
   
 }
 .modal-content {
@@ -227,18 +273,20 @@ body.active-modal {
   color:white;
   z-index: 999;
   transform: translate(-50%, -50%);
-  background:#424242;
+  background:#404040;
   padding: 14px 28px;
   border-radius: 8px;
   max-width: 600px;
   min-width: 300px;
-  box-shadow: 0 5px 15px rgba(0,0,0,.5);
-  
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.703);
+  text-align: center;
 }
 .modal-content input{
-  margin-top: 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   width: 100%;
   height: 25px;
+  border-radius: 6px;
 }
 .modal-content h2{
   text-align: center;
@@ -318,29 +366,40 @@ body.active-modal {
   background-color: rgba(0, 0, 0, 0.178);
   box-shadow: #00000054 0px 0px 20px 4px;
 }
-.all-events{
+.all-events-box{
   flex: 1; 
+  text-align: center;
   overflow-y: auto; 
   max-width: 300px;
-  color: white;
-  border-right: 1px solid #ddd;
-  background-color: var(--primary);
-  border-radius: 15px;
+  color: rgb(0, 0, 0);
   padding: 10px;
+  margin-top: 7px;
 }
-.all-events h2{
-text-align: center;
-margin-bottom: 20px;
-font-size: 1.5em;
+.all-events{
+  
+  min-height: 5rem;
+  border-radius: 5px;
+}
+.all-events-box h2{
+ text-align: center;
+ padding: 3px;
+ border-bottom: #000 solid 3px;
+ margin-bottom: 20px;
+ font-size: 1.5em;
 
 }
-.all-events h3 {
+.all-events-box h3 {
   font-size: 1.2em;
 
 }
-.all-events h4 {
+.all-events-box h4 {
   font-size: 1em;
 
+}
+.all-events-box .no-upcoming-events{
+  background-color: #00000022;
+  border-radius:10px;
+  padding: 7px;
 }
 
 .calendar-container {
@@ -354,8 +413,9 @@ font-size: 1.5em;
   border: none;
   padding: 10px;
   margin-bottom: 10px;
+  background: #0000001b;
   border-radius: 5px;
-  background-color: #31313191;
+  border: #00000088 solid 2px;
 }
 
 .event-preview h3 {
@@ -374,8 +434,17 @@ font-size: 1.5em;
 }
 .user-tasks{
   gap: 10px;
-  margin: 10px;
+  margin: 35px 10px; 
   
+}
+.user-tasks h1{
+  text-align: center;
+  margin-bottom: 20px;
+  top: 5px;
+  left: 45%;
+  color: rgb(0, 0, 0);
+  padding: 5px 10px;
+  border-radius: 8px;  position: absolute;
 }
 .user-tasks .note-content{
  background-color:var(--primary);
@@ -521,10 +590,7 @@ color: #000000;
   font-weight: 500;
   border-bottom: 2px solid #000000;
 }
-.home .calendar-container{
-  height: 100%;
-  width: 100%;
-}
+
 .my-calendar .days{
   flex-wrap: wrap;
   width: 100%;
@@ -542,7 +608,14 @@ color: #000000;
   position: relative; 
   border: 1px solid #000000;
   height: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
+  overflow: hidden;
+  cursor: pointer;
+  scrollbar-width: none; 
+}
+
+.calendar-cell::-webkit-scrollbar {
+  display: none; 
 }
 .day-number{
   font-size: 1.2em;
@@ -558,16 +631,12 @@ color: #000000;
 }
 .calendar-header{
   display: flex;
-  justify-content: center;
   margin-bottom: 20px;
-  font-size: 1rem;
-  font-weight: 500;
- 
+  
 }
 .calendar-header h2{
-  text-align: center;
   margin: 0 auto;
-  
+  font-size: 2em;
 }
 .calendar-header button{
   background: var(--theme);
@@ -609,6 +678,7 @@ color: #000000;
   border-radius: 5px;
   padding: 5px;
   margin: 5px 5px;
+  min-height: 1rem;
   background: var(--primary);
 }
 .event-item:hover {
@@ -632,13 +702,15 @@ color: #000000;
 }
 .event-item .delete-button:hover{
   color: rgb(255, 0, 0);
+  scale: 1.1;
+
 }
 
 .yearly-calendar {
   display: grid ;
   grid-template-columns:repeat(4,1fr);
   justify-content: center;
-  gap: 1.5rem; 
+  gap: 2rem; 
   font-size: 1rem;
   margin-top: 0.5rem;
 }
@@ -657,22 +729,25 @@ color: #000000;
   border-radius: 7px;
   overflow: visible;
 }
+.yearly-calendar .calendar-cell .day-number{
+  font-weight: 550;
+  font-size: 1.1em;
+}
 .yearly-calendar .calendar-cell .user-events{
   justify-content: center;
   align-items: center;
   max-height: 1em;
   width: 100%;
   overflow: hidden;
-  transition: all  1s cubic-bezier(0, 0, 0.58, 1) ;
+  transition: all 0.5s ;
   position: absolute;
 }
 
 .yearly-calendar .yearly-calendar-header{
-  
   text-align: center;
- 
+  margin-top: 10px;
 }
-.yearly-calendar .yearly-calendar-header h2{
+.yearly-calendar .yearly-calendar-header .year-title{
   margin-top: 1rem;
 }
 .yearly-calendar .calendar-cell .day-with-event{
@@ -683,17 +758,18 @@ color: #000000;
 }
 .yearly-calendar .calendar-cell .user-events:hover{
   max-height: 20em;
+  min-height: 4em;
   border-radius: 8px;
   position: absolute;
   background-color: var(--primary);
-  transform: translatey( 10px);
-  min-width: 10em;
+  transform: translate( -38px, 10px);
+  min-width: 10rem;
   z-index: 999;
   overflow: visible;
 }
 .yearly-calendar .calendar-cell .user-events .event-item {
   display: none;
-  transition: width 0.3s ease-in-out, max-height 0.3s ease-in-out, color 0.3s ease-in-out, font-size 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   will-change: width, max-height, color, font-size;
 }
 .yearly-calendar .calendar-cell .user-events:hover .day-with-event{
@@ -704,7 +780,8 @@ color: #000000;
   display: block;
   width: 85%;
   color: white;
-  font-size: larger;
+  background-color: var(--theme);
+  font-size: 1.2rem;
   max-height: 100px;
   border-radius: 8px;
   margin: 0.2em;
@@ -713,10 +790,9 @@ color: #000000;
 
 .yearly-calendar .calendar-cell .user-events .event-item:hover{
   background-color: #575757;
-  color: white;
 }
 .yearly-calendar .calendar-cell .today-number{
-   background-color: transparent;
+   background-color: rgba(203, 203, 203, 0.824);
    padding: 0;
    margin: 0 auto;
    font-size: 1.3em;
@@ -726,35 +802,83 @@ color: #000000;
  .home .yearly-calendar .calendar-grid {
   height: 25vh;
  }
-.home .year-mounth-activebutton{
-  background-color: transparent;
-  border-bottom: #000000 4px solid;
-  border-radius: 0;
-  color: #000000;
+.home .home-header .year-mounth-activebutton{
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  color: #ffffff;
+  background:var(--theme);
   font-size: 0.8em;
   font-weight: 700;
-  transition: 0.3s ease-in-out;
-}
-.home .year-mounth-activebutton:hover{
-  background-color: transparent;
-  
-}
-.home .year-mounth-notavtive{
-  background-color: var(--theme);
-  color: white;
-  border-radius: 2px;
-  font-size: 0.8em;
-  font-weight: 700;
-  transition: 0.3s ease-in-out;
-  
-}
-.home .year-mounth-notavtive:hover{
-  background-color: transparent;
-  color: #000000;
-  border-bottom: #000000 4px solid;
-  border-radius: 0;
+  scale: 1.2;
+  transition: 0.3s ;
 }
 
+.home .home-header .year-mounth-notavtive{
+  background-color: var(--primary);
+  color: rgb(0, 0, 0);
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.8em;
+  font-weight: 700;
+  transition: 0.3s ;
+  
+}
+.home .home-header .year-mounth-notavtive:hover{
+  scale: 1.1;
+}
+.time-input-error{
+  text-align: center;
+  margin: 5px;
+  color:red;
+}
+.check-box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+}
+.check-box input{
+  width: 15%;
+}
+
+.home-header{
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  top: 10px;
+  width: 100%;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.permanent-event{
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 10px 0 0 0;
+}
+.permanent-event-title{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.permanent-event select{
+  width: 6.6rem;
+  justify-self: center;
+  padding: 5px;
+  border-radius: 5px;
+  border: none;
+  color: #000000;
+}
+.event-period{
+  display: grid;
+  border-radius: 5px;
+  margin: 5px 5px 0 0;
+}
 @media (max-width:1546px) {
   .yearly-calendar {
 
@@ -768,7 +892,7 @@ color: #000000;
     height: auto; 
   }
 
-  .all-events {
+  .all-events-box {
     max-width: 100%; 
     margin-top: 20px; 
     min-height: 5rem;

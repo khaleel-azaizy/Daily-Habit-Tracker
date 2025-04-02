@@ -126,7 +126,7 @@ function DayCell({ day, addNewEvent, deleteEvent, handleEventDrop }) {
   );
 }
 
-function Event({ event, deleteEvent, addNewEvent }) {
+function Event({ event, deleteEvent, addNewEvent ,startTime,endTime}) {
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.EVENT,
     item: { id: event.id, date: event.date },
@@ -148,6 +148,9 @@ function Event({ event, deleteEvent, addNewEvent }) {
       onClick={handleClick}
     >
        {event.title}
+       {(startTime || endTime) && <p className="event-time">
+        {startTime} - {endTime}
+        </p> }
         {deletemodal && 
           <button className="delete-button" onClick={(e) => {
           e.stopPropagation();
@@ -161,3 +164,4 @@ function Event({ event, deleteEvent, addNewEvent }) {
 }
 
 export default Calendar;
+export { Event };
