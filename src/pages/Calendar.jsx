@@ -118,7 +118,7 @@ function DayCell({ day, addNewEvent, deleteEvent, handleEventDrop }) {
       <div className="user-events">
        
         {day.events.map((event, eventIndex) => (
-          <Event key={eventIndex} event={event} deleteEvent={deleteEvent} addNewEvent={addNewEvent} />
+          <Event key={eventIndex} event={event} deleteEvent={deleteEvent} addNewEvent={addNewEvent} startTime={event.startTime} endTime={event.endTime} />
         ))}
         {day.events.length > 0 && <div className="day-with-event"></div>}
       </div>

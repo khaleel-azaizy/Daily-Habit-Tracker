@@ -609,14 +609,11 @@ color: #000000;
   border: 1px solid #000000;
   height: 100%;
   overflow-y: scroll;
-  overflow: hidden;
   cursor: pointer;
   scrollbar-width: none; 
 }
 
-.calendar-cell::-webkit-scrollbar {
-  display: none; 
-}
+
 .day-number{
   font-size: 1.2em;
   font-weight: 500;
@@ -672,7 +669,7 @@ color: #000000;
 }
 .event-item {
   transition: 0.3s;
-  display: flex;
+  display: grid;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
@@ -758,7 +755,7 @@ color: #000000;
 }
 .yearly-calendar .calendar-cell .user-events:hover{
   max-height: 20em;
-  min-height: 4em;
+  min-height: 5em;
   border-radius: 8px;
   position: absolute;
   background-color: var(--primary);
@@ -777,7 +774,7 @@ color: #000000;
 } 
 
 .yearly-calendar .calendar-cell .user-events:hover .event-item {
-  display: block;
+  display: grid;
   width: 85%;
   color: white;
   background-color: var(--theme);
@@ -792,7 +789,7 @@ color: #000000;
   background-color: #575757;
 }
 .yearly-calendar .calendar-cell .today-number{
-   background-color: rgba(203, 203, 203, 0.824);
+   background-color: transparent;
    padding: 0;
    margin: 0 auto;
    font-size: 1.3em;

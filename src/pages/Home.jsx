@@ -42,12 +42,7 @@ export default function Home() {
       .then((response) => response.json())
       .then((data) => {
         const sortedEvents = data.sort((a, b) => new Date(a.date) - new Date(b.date));
-        const sortedEventsForTime = sortedEvents.sort((a, b) => {
-          const timeA = new Date(`1970-01-01T${a.startTime}:00`);
-          const timeB = new Date(`1970-01-01T${b.startTime}:00`);
-          return timeA - timeB;
-        });
-        setOneTimeEvents(sortedEventsForTime);
+        setOneTimeEvents(sortedEvents);
         
       })
       .catch((error) => {
