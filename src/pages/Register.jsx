@@ -40,9 +40,10 @@ export default function Register(){
     }
     
     return(
+        <>
         <div className="login">
             <div className="blod"></div>
-            <h2>Welcome to Daily Habit</h2>
+            <h2>Welcome</h2>
            
              <form onSubmit={handleSubmit}>
                  <label>Email</label>
@@ -54,12 +55,14 @@ export default function Register(){
                 <button >Register</button>
                 {error && <p style={{ color: 'red' ,textAlign:'center'}}>{error}</p>}
              </form>
-             <div className="login-her">
+            
+             
+        </div>
+        <div className="login-her">
              <h4>Already have an acount? </h4>
              <Link to="/login">Login here!</Link>
              </div>
-             
-        </div>
+        </>
     )
     }
 

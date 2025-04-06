@@ -194,8 +194,10 @@ export default function Home() {
 
   const handleNewEvent = (e) => {
     e.preventDefault();
-
-    if (startTime >= endTime) {
+    if(startTime===''||endTime===''){
+      
+    }
+    else if (startTime >= endTime) {
       setError('End time must be after start time.');
       return;
     }

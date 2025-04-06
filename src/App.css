@@ -43,7 +43,7 @@ button {
 .nav-links {
   display: flex;
   flex-direction: column;
-  margin-top: 2rem;
+  margin-top: 3rem;
   text-align: center;
   width: 100%;
 }
@@ -104,7 +104,11 @@ button {
   font-weight: 600; 
   transition: background-color 0.3s, color 0.3s, transform 0.2s;
 }
-
+.nav-links a i{
+  margin-right: 10px;
+  font-size: 1.2rem;
+  
+}
 .nav-links a:hover {
   background-color: var(--secondary);
   color: var(--theme);
@@ -154,26 +158,29 @@ button {
   box-sizing: border-box;
   align-items: center;
   position: relative;
-  overflow: hidden;
+  animation: img_animation 1s ease-in-out;
   max-width: 30rem;
   max-height: 30rem;
   display: block;
   justify-content: center;
   margin: 14rem auto ;
+  margin-bottom: 1rem;
   font-family: 'roboto', sans-serif;
-  background-color:rgba(71, 71, 71, 0.402);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.459);
-  border: 1px solid rgba(255,255,255, .18);
+  background-color:rgba(0, 0, 0, 0.053);
+  box-shadow: 10px 10px 40px  rgba(0, 0, 0, 0.532);
+  border: none;
+  padding: 10px;
   border-radius: 20px;
   
 }
 .login label{
-  display:grid;
   text-align: left;
   font-weight: 600;
-  margin-left: 1em;
+  margin-left: 14px; 
 }
-.login h2{
+
+
+.login h2 {
   text-align: center;
   font-size: 30px;
   color: #000000;
@@ -198,7 +205,8 @@ input:focus{
   font: 1.5em sans-serif;
   font-weight: 600;
   display: block;
-  color:var(--theme);
+  background: var(--theme);
+  color: #ffffff;
   border: none;
   border-radius: 6px;
   transition: 0.4s;
@@ -207,21 +215,25 @@ input:focus{
 
 }
 .login button:hover{
-  background-color:  #464646ce;
-  color: #ffffff;
+  scale: 1.05;
+  box-shadow: #00000054 0px 0px 10px 4px;
 
 }
 .regestir-her ,.login-her{
   display: block;
-  border-top: #000 2px solid;
+  background-color:rgba(0, 0, 0, 0.053);
+  box-shadow: 10px 10px 40px  rgba(0, 0, 0, 0.532);
+  animation: form_animation 1s ease-in-out;
+  padding: 10px;
+  min-width: 20rem;
+  justify-self: center;
+  border-radius: 20px;
   text-align: center;
-  padding: 5px;
-  margin: 5px;
-  color: #000000;
-  font-size: 1rem;
 }
 .regestir-her :Link,.login-her :Link{
   text-decoration: none;
+  margin: 10px;
+  display: inline-block;
   font-size: 18px;
   font-weight: 700;
   color: #000000;
@@ -232,22 +244,25 @@ input:focus{
 .regestir-her a ,.login-her a{
 color: #000;
 }
-.blod{
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  z-index: -1;
-  background: linear-gradient(135deg , #10101090 , #feffffbd);
-  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70% ;
-  transform: translate(-100px , -50px);
-  animation: img_animation 20s linear infinite alternate;
-}
+
 @keyframes img_animation {
-  100%{
-      border-radius: 17% 83% 21% 79% / 58% 32% 68% 42% ;
-      transform: translate(200px , 50px);
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
+@keyframes form_animation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    
+    opacity: 1;
+  }
+}
+
 body.active-modal {
   overflow-y: hidden;
 }
@@ -446,6 +461,16 @@ body.active-modal {
   padding: 5px 10px;
   border-radius: 8px;  position: absolute;
 }
+@keyframes from-left {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
 .user-tasks .note-content{
  background-color:var(--primary);
  width: 99%;
@@ -493,12 +518,10 @@ color: #000000;
 }
 .user-tasks .note-content .add-note:hover{
   background-color: #424242b2;
- 
-
 }
 
 .user-tasks .all-notes{
-
+  animation: from-left 0.5s;
   max-width: 100%; 
   min-height: 4.7rem;
   overflow-y: auto; 
@@ -565,7 +588,6 @@ color: #000000;
   border: 10px solid var(--primary);
   border-top: 10px solid #000000;
   z-index: 999;
- 
   animation: loading_animation infinite 1.5s linear;
 }
 @keyframes loading_animation {
@@ -589,6 +611,7 @@ color: #000000;
   font-size: 1.5rem;
   font-weight: 500;
   border-bottom: 2px solid #000000;
+  animation: img_animation 0.7s linear;
 }
 
 .my-calendar .days{
@@ -601,6 +624,7 @@ color: #000000;
   display: grid;
   grid-template-columns: repeat(7, 1fr); 
   height: 73vh;
+  animation: form_animation 0.7s ;
 }
 
 

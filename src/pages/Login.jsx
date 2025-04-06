@@ -72,9 +72,12 @@ export default function Login(){
     return(
       <div>
         {loading&&(<div className="loading"></div>)}
-        {!loading&&(<div className="login">
+        {!loading&&(
+          <>
+          <div className="login">
+            
           <div className="blod"></div>
-            <h2>Welcome to Daily Habit</h2>
+            <h2>Welcome</h2>
            
              <form onSubmit={handleSubmit}>
               <div className="form-group">
@@ -87,12 +90,15 @@ export default function Login(){
                 </div>
              </form>
             
-             <div className="regestir-her">
+             
+            
+        </div>
+        <div className="regestir-her">
              <h4>You dont have an acount? </h4>
              <Link to="/register">Register here!</Link>
              </div>
-            
-        </div>)}
+        </>
+      )}
         </div>
     )
     }

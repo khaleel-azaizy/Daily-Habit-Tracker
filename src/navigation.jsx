@@ -42,6 +42,9 @@ export default function Navigation() {
 
             {sidebarOpen && (
                 <aside className="navigation-sidebar">
+                    <h3 style={{color:"white",marginLeft:"2rem",width:"9rem",position:"absolute",top:"1rem"}}>
+                        Daily Habits
+                        </h3>
                     <nav className="nav-links">
                         <NavLink
                             to="/home"
@@ -49,6 +52,7 @@ export default function Navigation() {
                             aria-label="Go to Calendar"
                             onClick={closeSidebar}
                         >
+                            <i className="fa fa-calendar" aria-hidden="true"></i> 
                             Calendar
                         </NavLink>
                         <NavLink
@@ -57,6 +61,7 @@ export default function Navigation() {
                             aria-label="Go to User Notes"
                             onClick={closeSidebar}
                         >
+                            <i className="fa fa-sticky-note" aria-hidden="true"></i>
                             User Notes
                         </NavLink>
                     </nav>
