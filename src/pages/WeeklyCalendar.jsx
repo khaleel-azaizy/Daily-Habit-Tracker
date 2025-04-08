@@ -69,7 +69,7 @@ const WeeklyCalendar = ({ currentDay, year, month, events, addNewEvent, deleteEv
             <div key={index} className="day-column">
               <div
                 className={
-                  (day.date === new Date(year, month, currentDay).getDay() - 1 && day.month === new Date().getMonth())
+                  (day.date === new Date().getDate()  && day.month === new Date().getMonth())
                     ? 'weekly-today-number'
                     : 'day-header'
                 }
