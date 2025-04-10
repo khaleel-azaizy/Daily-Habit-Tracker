@@ -52,13 +52,9 @@ npm install
 3. Runing The App:
 In the project directory, you can run:
 ```bash
-npm run start
+npm run start-all
 ```
-4. Running The Back-End:
-```bash
-cd server
-nodemon Router.js
-```
+
 Runs the app in the development mode.
 Open http://localhost:3000 to view it in your browser.
 
