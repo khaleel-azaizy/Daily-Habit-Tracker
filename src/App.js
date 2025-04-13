@@ -9,7 +9,6 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import './App.css'
 import Register from "./pages/Register"
-import WeeklyCalendar from "./pages/WeeklyCalendar"
 
 
 const router = createBrowserRouter(

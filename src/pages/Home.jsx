@@ -455,10 +455,10 @@ export default function Home() {
       {error && <div className="time-input-error">{error}</div>}
         <div className="modal-button">
           <button  onClick={handleClick} className="close-modal">
-            Close
+            Exit
           </button>
           <button type="submit" className="submit-modal">
-            Submit
+            Add Event
           </button>
         </div>
       </form>

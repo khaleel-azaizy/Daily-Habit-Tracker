@@ -459,7 +459,8 @@ body.active-modal {
   left: 45%;
   color: rgb(0, 0, 0);
   padding: 5px 10px;
-  border-radius: 8px;  position: absolute;
+  border-radius: 8px; 
+  position: absolute;
 }
 @keyframes from-left {
   0% {
@@ -483,16 +484,14 @@ body.active-modal {
  left: 0;
  right: 0;
  flex-grow: 1;
- 
-
 }
 .user-tasks .note-content input{
-flex-grow: 15;
-height: 30px;
-border-radius: 9px;
-border: none;
-font-size:medium;
-color: #000000;
+ flex-grow: 15;
+ height: 30px;
+ border-radius: 9px;
+ border: none;
+ font-size:medium;
+ color: #000000;
 }
 .user-tasks .note-content input::placeholder{
   font-size: 15px;
@@ -521,7 +520,6 @@ color: #000000;
 }
 
 .user-tasks .all-notes{
-  animation: from-left 0.5s;
   max-width: 100%; 
   min-height: 4.7rem;
   overflow-y: auto; 
@@ -539,6 +537,7 @@ color: #000000;
   color: white;
   background-color: #424242;
   transition: 0.3s;
+  animation: from-left 0.5s;
 
 }
 .done-button{
