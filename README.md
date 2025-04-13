@@ -52,19 +52,17 @@ npm install
 3. Runing The App:
 In the project directory, you can run:
 ```bash
-npm run start
+npm run start-all
 ```
-4. Running The Back-End:
-```bash
-cd server
-nodemon Router.js
-```
+
 Runs the app in the development mode.
 Open http://localhost:3000 to view it in your browser.
 
 The page will reload when you make changes.
-You may also see any lint errors in the console.
-![Screenshot 2025-03-16 133928](https://github.com/user-attachments/assets/ecc39c00-d781-4f33-926a-4a3f9612042e)
-![Screenshot 2025-03-16 133940](https://github.com/user-attachments/assets/78c0c8b3-b0ae-490f-b8b2-0929bc613b10)
-![Screenshot 2025-03-16 133957](https://github.com/user-attachments/assets/95999f3d-848d-4e19-b2e6-9123c8ef3c34)
-![Screenshot 2025-03-16 134021](https://github.com/user-attachments/assets/1110f338-0365-46b1-9f3b-27a9385a734d)
+
+![Screenshot 2025-04-10 142904](https://github.com/user-attachments/assets/77c23b66-fc4d-4de5-af55-c5ba29a0fa3b)
+![Screenshot 2025-04-10 143334](https://github.com/user-attachments/assets/99641a05-b1b1-4f60-9f8e-7b1bef86fbec)
+![Screenshot 2025-04-10 143523](https://github.com/user-attachments/assets/71d92e0d-c916-4274-8631-758f9ace8312)
+![Screenshot 2025-04-10 143540](https://github.com/user-attachments/assets/b9d76e37-1c4a-4060-a62e-1918512bb0ad)
+![Screenshot 2025-04-10 143558](https://github.com/user-attachments/assets/a0ad1e84-f1b0-4adc-94de-05b279c85e8e)
+![Screenshot 2025-04-10 143719](https://github.com/user-attachments/assets/f3d255d8-2845-4cef-b57c-058efbdb5395)
