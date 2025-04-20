@@ -305,167 +305,161 @@ export default function Home() {
   };
   return (
     <div className="home">
- 
-  
-    <header className="home-header"> 
-    <button  className={yearButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullYear}>Yearly</button>
-    <button className={monthButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullMonth}>Monthly</button>
-    <button className={WeekButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullWeek}>Weekly</button>
-    
-    </header>
-    <div className="home-container">
-    {monthButton &&<div className="calendar-container">
-    <div className="calendar-header">
-    <div className="back-forward-button-holder">
-    <button  className="back-button" onClick={goToPreviousMonth}></button>
-    <button  className="forward-button" onClick={goToNextMonth}></button>
-    </div>
-    <button onClick={gotToThisDay}>Today</button>
-    <h2 className="mounth-year-title">{monthName} {currentYear}</h2>
-   </div>
-    <Calendar year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleDeleteClick} handleEventDrop={handleEventDrop}/>
-    
-    
-    </div>}
+      <header className="home-header"> 
+        <button className={yearButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullYear}>
+          <i className="fas fa-calendar-alt"></i>
+        </button>
+        <button className={monthButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullMonth}>
+          <i className="fas fa-calendar"></i>
+        </button>
+        <button className={WeekButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullWeek}>
+          <i className="fas fa-calendar-week"></i>
+        </button>
+      </header>
+      <div className="home-container">
+        {monthButton && <div className="calendar-container">
+          <div className="calendar-header">
+            <div className="back-forward-button-holder">
+              <button className="back-button" onClick={goToPreviousMonth}></button>
+              <button className="forward-button" onClick={goToNextMonth}></button>
+            </div>
+            <button onClick={gotToThisDay}>Today</button>
+            <h2 className="mounth-year-title">{monthName} {currentYear}</h2>
+          </div>
+          <Calendar year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleDeleteClick} handleEventDrop={handleEventDrop} />
+        </div>}
 
-    {yearButton && <div className="calendar-container">
-    <div className="calendar-header">
-    <div className="back-forward-button-holder">
-    <button  className="back-button" onClick={goToPreviousYear}></button>
-    <button  className="forward-button" onClick={goToNextYear}></button>
-    </div>
-   
-    <button onClick={gotToThisDay}>Today</button>
-    <h2 className="year-title"> {currentYear}</h2>
-    <div className="extra"></div>
-   </div>
-    <YearlyCalendar year={currentYear} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleDeleteClick} handleEventDrop={handleEventDrop}/>
-    </div>
-    }
+        {yearButton && <div className="calendar-container">
+          <div className="calendar-header">
+            <div className="back-forward-button-holder">
+              <button className="back-button" onClick={goToPreviousYear}></button>
+              <button className="forward-button" onClick={goToNextYear}></button>
+            </div>
+            <button onClick={gotToThisDay}>Today</button>
+            <h2 className="year-title"> {currentYear}</h2>
+            <div className="extra"></div>
+          </div>
+          <YearlyCalendar year={currentYear} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleDeleteClick} handleEventDrop={handleEventDrop} />
+        </div>}
 
-    {WeekButton &&<div className="calendar-container">
-    <div className="calendar-header">
-    <div className="back-forward-button-holder">
-    <button  className="back-button" onClick={goToPreviousWeek}></button>
-    <button  className="forward-button" onClick={goToNextWeek}></button>
-    </div>
-    <button onClick={gotToThisDay}>Today</button>
-    <h2>{monthName} {currentYear}</h2>
-   </div>
-    <WeeklyCalendar currentDay={currentDay} year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleDeleteClick} handleEventDrop={handleEventDrop} />
-    
-    
-    </div>}
-    {!fullYear &&
-    <div className="all-events-box">
-      <h2>Upcoming Events</h2>
-      <div className="all-events">
-      {upcomingEvents.length > 0 ? (
-        upcomingEvents.map((event) => (
-          <div className="event-preview" key={event.id}>
-            <div className="event-details">
-              <h3>{event.title}</h3>
-              <h4>{event.date}</h4>
+        {WeekButton && <div className="calendar-container">
+          <div className="calendar-header">
+            <div className="back-forward-button-holder">
+              <button className="back-button" onClick={goToPreviousWeek}></button>
+              <button className="forward-button" onClick={goToNextWeek}></button>
+            </div>
+            <button onClick={gotToThisDay}>Today</button>
+            <h2>{monthName} {currentYear}</h2>
+          </div>
+          <WeeklyCalendar currentDay={currentDay} year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleDeleteClick} handleEventDrop={handleEventDrop} />
+        </div>}
+        {!fullYear &&
+          <div className="all-events-box">
+            <h2>Upcoming Events</h2>
+            <div className="all-events">
+              {upcomingEvents.length > 0 ? (
+                upcomingEvents.map((event) => (
+                  <div className="event-preview" key={event.id}>
+                    <div className="event-details">
+                      <h3>{event.title}</h3>
+                      <h4>{event.date}</h4>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <h3 className="no-upcoming-events">No Upcoming Events</h3>
+              )}
             </div>
           </div>
-        ))
-      ) : (
-        <h3 className="no-upcoming-events">No Upcoming Events</h3>
-      )}
+        }
       </div>
-     
-    </div>
-    }
-    
-  </div>
-  
-  {modal && (
-    <div className="modal">
-      <div className="overlay"></div>
-      <form className="modal-content" onSubmit={handleNewEvent}>
-        <h2>Event Details</h2>
-        <input
-          type="text"
-          required
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Enter event title"
-        />
-        <label htmlFor="startTime">Start Time</label>
-        <div className="input-wrapper">
-          <input 
-            id="startTime"
-            type="time" 
-            value={startTime} 
-            onChange={(e) => setStartTime(e.target.value)}
-          />
-        </div>
-        <label htmlFor="endTime">End Time</label>
-        <div className="input-wrapper">
-          <input 
-            id="endTime"
-            type="time" 
-            value={endTime} 
-            onChange={(e) => setEndTime(e.target.value)}
-          />
-        </div>
-        <div className="check-box">
-        <label htmlFor="myCheckbox">Make The Event Permanent!</label>
-        <input
-        type="checkbox"
-        id="myCheckbox"
-        checked={checked}
-        onChange={(e)=>setChecked(e.target.checked)}
-      />
-        </div>
-      {checked && (
-        <div className="permanent-event">
-          <div className="permanent-event-title">
-          <h4>Every  </h4>
-          <select defaultValue={PermanentEvent} onChange={(e) => setIsPermanentEvent(e.target.value)}>
-            <option value="day">Day</option>
-            <option value="week">Week</option>
-            <option value="month">Month</option>
-          </select>
-          </div>
-        <div className="event-period">
-        <div className="permanent-event-title">
-        <label >From</label>
-        <input 
-        id="startTime"
-        type="date" 
-        value={startDate} 
-        required
-        onChange={(e) => setStartDate(e.target.value)}
-      />
-      </div>
-      <div className="permanent-event-title">
-      <label >Until </label>
-        <input 
-        id="startTime"
-        type="date" 
-        value={endDate} 
-        required
-        onChange={(e) => setEndDate(e.target.value)}
-      />
-      </div>
-      </div>
-      </div>
-      )}
-      {error && <div className="time-input-error">{error}</div>}
-        <div className="modal-button">
-          <button  onClick={handleClick} className="close-modal">
-            Exit
-          </button>
-          <button type="submit" className="submit-modal">
-            Add Event
-          </button>
-        </div>
-      </form>
-    </div>
-  )}
 
-</div>
+      {modal && (
+        <div className="modal">
+          <div className="overlay"></div>
+          <form className="modal-content" onSubmit={handleNewEvent}>
+            <h2>Event Details</h2>
+            <input
+              type="text"
+              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter event title"
+            />
+            <label htmlFor="startTime">Start Time</label>
+            <div className="input-wrapper">
+              <input 
+                id="startTime"
+                type="time" 
+                value={startTime} 
+                onChange={(e) => setStartTime(e.target.value)}
+              />
+            </div>
+            <label htmlFor="endTime">End Time</label>
+            <div className="input-wrapper">
+              <input 
+                id="endTime"
+                type="time" 
+                value={endTime} 
+                onChange={(e) => setEndTime(e.target.value)}
+              />
+            </div>
+            <div className="check-box">
+              <label htmlFor="myCheckbox">Make The Event Permanent!</label>
+              <input
+                type="checkbox"
+                id="myCheckbox"
+                checked={checked}
+                onChange={(e) => setChecked(e.target.checked)}
+              />
+            </div>
+            {checked && (
+              <div className="permanent-event">
+                <div className="permanent-event-title">
+                  <h4>Every  </h4>
+                  <select defaultValue={PermanentEvent} onChange={(e) => setIsPermanentEvent(e.target.value)}>
+                    <option value="day">Day</option>
+                    <option value="week">Week</option>
+                    <option value="month">Month</option>
+                  </select>
+                </div>
+                <div className="event-period">
+                  <div className="permanent-event-title">
+                    <label>From</label>
+                    <input 
+                      id="startTime"
+                      type="date" 
+                      value={startDate} 
+                      required
+                      onChange={(e) => setStartDate(e.target.value)}
+                    />
+                  </div>
+                  <div className="permanent-event-title">
+                    <label>Until </label>
+                    <input 
+                      id="startTime"
+                      type="date" 
+                      value={endDate} 
+                      required
+                      onChange={(e) => setEndDate(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+            {error && <div className="time-input-error">{error}</div>}
+            <div className="modal-button">
+              <button onClick={handleClick} className="close-modal">
+                Exit
+              </button>
+              <button type="submit" className="submit-modal">
+                Add Event
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+    </div>
   )
 }
 

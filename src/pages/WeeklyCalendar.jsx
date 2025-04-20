@@ -75,29 +75,29 @@ const WeeklyCalendar = ({ currentDay, year, month, events, addNewEvent, deleteEv
                 }
                 onClick={() => {
                   addNewEvent(day);
-                  calculateWeekDays(); 
-                }}
-              >
-                {day.date} / {day.month + 1}
-              </div>
-
-              {day.events.map((event, eventIndex) => (
-                <div
-                  key={eventIndex}
-                  className="day-events"
-                  style={{
-                    gridRow:
-                      parseFloat(event.startTime) +
-                      2 +
-                      '/' +
-                      (parseFloat(event.endTime) + 2),
+                    calculateWeekDays(); 
                   }}
-                >
-                  <Event
+                  >
+                  {day.date} / {day.month + 1}
+                  </div>
+
+                  {day.events.map((event, eventIndex) => (
+                    
+                  <div
+                    key={eventIndex}
+                    className="day-events"
+                    style={{
+                    gridRow:
+                    parseInt(event.startTime.split(':')[0] +(event.startTime.split(':')[1]*(100/60)=== 0 ? '00' : event.startTime.split(':')[1]*(100/60)) ) +45
+                    +'/' +
+                    (parseInt(event.endTime.split(':')[0] +(event.endTime.split(':')[1]*(100/60)=== 0 ? '00' : event.endTime.split(':')[1]*(100/60)) ) +50 )
+                    }}
+                  >               
+                    <Event
                     event={event}
                     deleteEvent={(eventToDelete) => {
                       deleteEvent(eventToDelete);
-                      calculateWeekDays(); 
+                      calculateWeekDays();  
                     }}
                     addNewEvent={addNewEvent}
                     startTime={event.startTime}

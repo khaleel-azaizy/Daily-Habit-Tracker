@@ -1,4 +1,4 @@
-@keyframes left_animation {
+@keyframes animation {
   0% {
     opacity: 0;
   }
@@ -16,7 +16,7 @@
     display: flex;
     flex-direction: row;
     gap: 10px;
-    animation: left_animation 0.8s;
+    animation: animation 0.8s;
    
   }
   .full-weekly-calendar{
@@ -41,16 +41,17 @@
     display: flex;
     flex-direction: column;
     width: 25px;
+    margin-top: 45px;
     text-align: right;
     font-size: 0.9rem;
     color: #000000;
-    margin-top: 45px;
+    
     
   }
   
   .time-slot {
-    height: 50px;
-   
+    height: 100px;
+
   }
   
   .week-grid {
@@ -64,7 +65,7 @@
     justify-content: center;
     text-align: center;
     background-color: #97979770;
-    height: 95%;
+    height: 100%;
     font-weight: 500;
     font-size: 1rem;
     margin: 0;
@@ -74,10 +75,11 @@
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);  
   }
   
+  
   .day-column {
     flex: 1;
     display: grid;
-    grid-template-rows: repeat(24, 50px);
+    grid-template-rows: repeat(2400, 1px);
     border-left: 1px solid #000000;
     position: relative;
   }
@@ -94,8 +96,37 @@
   }
   
   .day-events {
-    justify-content: center;
     display: flex;
+    justify-content: center;
+    flex-grow: 1;
+  }
+  
+  .event-time {
+    font-size: 0.9em;
+    margin: 0;
+}
+  .day-column {
+    flex: 1;
+    display: grid;
+    grid-template-rows: repeat(2400, 1px);
+    border-left: 1px solid #000000;
+    position: relative;
+  }
+  
+  .day-header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.3em;
+    width: 100%;
+    padding: 5px 0;
+    position: absolute;
+    background-color: #f5f5f500;
+    border-bottom: #000000 1px solid;
+  }
+  
+  .day-events {
+    display: flex;
+    justify-content: center;
     flex-grow: 1;
   }
   
