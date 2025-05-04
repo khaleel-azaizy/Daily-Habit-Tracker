@@ -303,20 +303,25 @@ export default function Home() {
     setCurrentMonth(nextWeekDate.getMonth());
     setCurrentYear(nextWeekDate.getFullYear());
   };
+
+  const editEvent = (id) => {
+   
+  }
   return (
     <div className="home">
+      
+      <div className="home-container">
       <header className="home-header"> 
-        <button className={yearButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullYear}>
+        <button className={yearButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullYear}  aria-label="Yearly Calendar">
           <i className="fas fa-calendar-alt"></i>
         </button>
-        <button className={monthButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullMonth}>
+        <button className={monthButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullMonth} aria-label="Monthly Calendar">
           <i className="fas fa-calendar"></i>
         </button>
-        <button className={WeekButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullWeek}>
+        <button className={WeekButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullWeek} aria-label="Weekly Calendar">
           <i className="fas fa-calendar-week"></i>
         </button>
       </header>
-      <div className="home-container">
         {monthButton && <div className="calendar-container">
           <div className="calendar-header">
             <div className="back-forward-button-holder">
@@ -326,7 +331,7 @@ export default function Home() {
             <button onClick={gotToThisDay}>Today</button>
             <h2 className="mounth-year-title">{monthName} {currentYear}</h2>
           </div>
-          <Calendar year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleDeleteClick} handleEventDrop={handleEventDrop} />
+          <Calendar year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleDeleteClick} handleEventDrop={handleEventDrop} editEvent={editEvent} />
         </div>}
 
         {yearButton && <div className="calendar-container">
@@ -339,7 +344,7 @@ export default function Home() {
             <h2 className="year-title"> {currentYear}</h2>
             <div className="extra"></div>
           </div>
-          <YearlyCalendar year={currentYear} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleDeleteClick} handleEventDrop={handleEventDrop} />
+          <YearlyCalendar year={currentYear} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleDeleteClick} handleEventDrop={handleEventDrop} editEvent={editEvent}/>
         </div>}
 
         {WeekButton && <div className="calendar-container">
@@ -351,7 +356,7 @@ export default function Home() {
             <button onClick={gotToThisDay}>Today</button>
             <h2>{monthName} {currentYear}</h2>
           </div>
-          <WeeklyCalendar currentDay={currentDay} year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleDeleteClick} handleEventDrop={handleEventDrop} />
+          <WeeklyCalendar currentDay={currentDay} year={currentYear} month={currentMonth} events={events} addNewEvent={handleNewDateSelect} deleteEvent={handleDeleteClick} handleEventDrop={handleEventDrop} editEvent={editEvent}/>
         </div>}
         {!fullYear &&
           <div className="all-events-box">

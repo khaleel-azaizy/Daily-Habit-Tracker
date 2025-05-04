@@ -14,7 +14,7 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  
+  overflow-x: hidden;
 }
 * {
 
@@ -39,6 +39,7 @@ button {
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   overflow-y: auto; 
+  animation: from-left 0.3s ease-out;
 }
 .nav-links {
   display: flex;
@@ -69,10 +70,10 @@ button {
   transition: 0.3s;
 }
 .navigation-container .sidebar-toggle-button-open{
-  background: var(--secondary);
+  background: var(--theme);
   border-radius: 5px;
   border: none;
-  color: black;
+  color: rgb(255, 255, 255);
   width: 2.2rem;
   height: 2.2rem;
   font-size: 1.5rem;
@@ -82,10 +83,12 @@ button {
   left: 0px; 
   z-index: 1100; 
   transition: 0.3s;
+  
 }
 .navigation-container .sidebar-toggle-button-open:hover{
   background: var(--secondary);
   color: black;
+
   scale: 1.1;
 }
 .navigation-container .sidebar-toggle-button:hover{
@@ -137,7 +140,6 @@ button {
   transform: scale(1.1); 
 }
 
-
 .home{
   margin: 10px;
   margin-top: 3rem;
@@ -160,10 +162,10 @@ button {
   position: relative;
   animation: img_animation 1s ease-in-out;
   max-width: 30rem;
-  max-height: 30rem;
+  max-height: 40vh;
   display: block;
   justify-content: center;
-  margin: 14rem auto ;
+  margin: 28vh auto ;
   margin-bottom: 1rem;
   font-family: 'roboto', sans-serif;
   background-color:rgba(0, 0, 0, 0.053);
@@ -228,7 +230,7 @@ input:focus{
   background-color:rgba(0, 0, 0, 0.053);
   backdrop-filter: blur(10px);
   box-shadow: 10px 10px 40px  rgba(0, 0, 0, 0.532);
-  animation: form_animation 1s ease-in-out;
+  animation: img_animation 1s ease-in-out;
   padding: 10px;
   min-width: 20rem;
   justify-self: center;
@@ -258,16 +260,6 @@ color: #000;
     opacity: 1;
   }
 }
-@keyframes form_animation {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    
-    opacity: 1;
-  }
-}
-
 body.active-modal {
   overflow-y: hidden;
 }
@@ -283,23 +275,26 @@ body.active-modal {
 
 }
 .overlay {
-  background-color: #0000008c;
+  background-color: #00000022;
   
 }
 .modal-content {
   position: fixed;
   top: 50%;
   left: 50%;
-  color:white;
+  color:rgb(0, 0, 0);
   z-index: 999;
   transform: translate(-50%, -50%);
-  background:#404040;
+  background:#40404000;
+  border: #00000039 solid 1px;
+  backdrop-filter: blur(10px);
   padding: 14px 28px;
   border-radius: 8px;
   max-width: 600px;
   min-width: 300px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.703);
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.703);
   text-align: center;
+  animation: img_animation 0.2s ease-in-out;
 }
 .modal-content input{
   margin-top: 5px;
@@ -314,43 +309,40 @@ body.active-modal {
 }
 .modal-button ,.close-modal ,.submit-modal{
   display: flex;
-  
+  gap: 2rem;
 }
 .close-modal {
   background:var(--theme);
   color: #ffffff;
   font-size: 1rem;
   font-weight: 750;
-  display: flex;
   padding: 15px;
-  margin: 15px 45px;
+  flex: 1;
+  justify-content: center;
   border: none;
   border-radius: 6px;
   transition: 0.4s;
 }
 .submit-modal{
-  background:var(--secondary);
-  color: black;
+  background:var(--theme);
+  color: rgb(255, 255, 255);
   font-size: 1rem;
+  flex: 1;
+  justify-content: center;
   font-weight: 750;
-  display: flex;
   padding: 15px;
-  margin: 15px 45px;
   border: none;
   border-radius: 6px;
-  transition: 0.4s;
+  transition:scale 0.4s,box-shadow 0.1s;
 }
-.submit-modal:hover{
-  background: #686868;
+.close-modal:hover,.submit-modal:hover{
+  box-shadow: #00000054 0px 0px 10px 4px;
+  scale: 1.05;
 }
-.close-modal:hover{
-  background: #313131;
-}
-
 .home-container {
   display: flex; 
   gap: 1rem; 
-  height: 82vh;
+
 }
 .home .back-forward-button-holder{
   display: flex;
@@ -385,6 +377,7 @@ body.active-modal {
 .home .forward-button:hover ,.home .back-button:hover{
   background-color: rgba(0, 0, 0, 0.178);
   box-shadow: #00000054 0px 0px 20px 4px;
+  scale: 1.1;
 }
 .all-events-box{
   flex: 1; 
@@ -393,10 +386,10 @@ body.active-modal {
   max-width: 300px;
   color: rgb(0, 0, 0);
   padding: 10px;
-  margin-top: 7px;
+  margin-top: 3.7rem;
+  
 }
 .all-events{
-  
   min-height: 5rem;
   border-radius: 5px;
 }
@@ -423,12 +416,12 @@ body.active-modal {
 }
 
 .calendar-container {
-  flex: 3; 
+  flex: 6; 
   padding: 10px; 
   color: #000000;
+  height: 85vh;
  
 }
-
 .event-preview {
   border: none;
   padding: 10px;
@@ -440,7 +433,11 @@ body.active-modal {
 
 .event-preview h3 {
   margin: 0;
-  
+  word-wrap: break-word; 
+  white-space: pre-wrap;
+  width: 100%; 
+  overflow-wrap: break-word; 
+  max-width: calc(100% - 80px);
 }
 .event-preview h4 {
   margin-right: 0;
@@ -450,7 +447,8 @@ body.active-modal {
   display: flex;
   justify-content: space-between;
   width: 100%; 
-  
+  align-items: center;
+ 
 }
 .user-tasks{
   gap: 10px;
@@ -467,18 +465,10 @@ body.active-modal {
   border-radius: 8px; 
   position: absolute;
 }
-@keyframes from-left {
-  0% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
+
 .user-tasks .note-content{
- background-color:var(--primary);
+ background-color:#00000022;
+ backdrop-filter: blur(10px);
  width: 99%;
  position: fixed;
  padding: 13px;
@@ -529,7 +519,8 @@ body.active-modal {
   min-height: 4.7rem;
   overflow-y: auto; 
   border-right: 1px solid #ddd;
-  background-color: var(--primary);
+  background-color:#00000022;
+  backdrop-filter: blur(10px);
   border-radius: 15px;
   padding: 10px;
   flex-wrap: wrap;
@@ -539,10 +530,12 @@ body.active-modal {
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
   color: white;
-  background-color: #424242;
+  background-color: #000000;
   transition: 0.3s;
-  animation: from-left 0.5s;
+  animation: img_animation 0.5s;
 
 }
 .done-button{
@@ -563,10 +556,6 @@ body.active-modal {
   
 }
 
-.user-tasks .all-notes .notes-preview:hover{
-  background-color: #525252;
-
-}
 .user-tasks .all-notes .notes-preview .note-details{
   display: flex;
   justify-content: space-between;
@@ -581,7 +570,17 @@ body.active-modal {
   max-width: calc(100% - 80px);
 }
 
-
+.move-button{
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  align-items: center;
+  transition: 0.3s;
+}
+.move-button:hover{
+  scale: 1.2;
+}
 .loading{
   display: flex;
   margin: 0 auto;
@@ -627,8 +626,9 @@ body.active-modal {
 .home .calendar-container .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr); 
-  height: 73vh;
-  animation: form_animation 0.7s ;
+  height: 75vh;
+  animation: img_animation 0.7s ;
+  
 }
 
 
@@ -656,7 +656,6 @@ body.active-modal {
 }
 .calendar-header{
   display: flex;
-  margin-bottom: 20px;
   
 }
 .calendar-header h2{
@@ -679,13 +678,8 @@ body.active-modal {
 }
 
 .today-number{
-  background: #000000c9;
-  border: none;
-  border-radius: 5px;
-  padding: 5px;
-  margin: 5px;
-  width: 1em;
-  color: white;
+  font-size: 1.3em;
+  color: rgb(255, 0, 0);
 }
 
 .user-events{
@@ -697,7 +691,7 @@ body.active-modal {
 }
 .event-item {
   transition: 0.3s;
-  display: grid;
+  display: flex;
   text-align: center;
   justify-content: center;
   align-items: center;
@@ -705,21 +699,31 @@ body.active-modal {
   padding: 5px;
   margin: 5px 5px;
   min-height: 1rem;
-  background: var(--primary);
+  max-width: 10rem;
+  flex-wrap: wrap;
+  backdrop-filter: blur(5px);
+  border: #000000 solid 1px;
+  background-color: #0000001b;
 }
 .event-item:hover {
   background-color: #3d3d3d98;
   color: white;
   cursor: pointer;
 }
-
-.event-item .delete-button{
+.event-item h4{
+  word-wrap: break-word; 
+  white-space: pre-wrap;
+  width: 100%; 
+  overflow-wrap: break-word; 
+  
+}
+.event-item .delete-button ,.event-item .edit-button{
   background: transparent;
   border: none;
   padding: 0.1em 0.5em;
   border-radius: 1em;
   color: #000000;
-  position: absolute;
+  position: relative;
   right: 0.2em;
   margin-left: 0.5em;
   font-size: 1rem;
@@ -730,6 +734,10 @@ body.active-modal {
   color: rgb(255, 0, 0);
   scale: 1.1;
 
+}
+.event-item .edit-button:hover{
+  color: rgb(0, 187, 3);
+  scale: 1.1;
 }
 
 .yearly-calendar {
@@ -803,19 +811,27 @@ body.active-modal {
 } 
 
 .yearly-calendar .calendar-cell .user-events:hover .event-item {
-  display: grid;
+  display: block;
   width: 85%;
   color: white;
-  background-color: var(--theme);
+  background-color: #000000a9;
   font-size: 1.2rem;
   max-height: 100px;
   border-radius: 8px;
   margin: 0.2em;
 }
-
+.yearly-calendar .event-item .delete-button ,.yearly-calendar .event-item .edit-button{
+  color: white;
+}
+.yearly-calendar .event-item .delete-button:hover{
+  color: rgb(255, 0, 0);
+}
+.yearly-calendar .event-item .edit-button:hover{
+  color: rgb(0, 187, 3);
+}
 
 .yearly-calendar .calendar-cell .user-events .event-item:hover{
-  background-color: #575757;
+  background-color:  var(--theme);
 }
 .yearly-calendar .calendar-cell .today-number{
    background-color: transparent;
@@ -835,7 +851,8 @@ body.active-modal {
   left: 0;
   right: 0;
   margin: 0 auto;
-  width: 11%;
+  width: 11.5rem;
+  height: 2.2rem;
   gap: 2rem;
   border-radius: 10px ;
  }
@@ -845,7 +862,7 @@ body.active-modal {
   padding: 10px;
   color: #000000;
   background:var(--secondary);
-  font-size: 0.8em;
+  font-size: 14px;
   font-weight: 700;
   scale: 1.3;
   width: 20%;
@@ -857,8 +874,9 @@ body.active-modal {
   color: rgb(255, 255, 255);
   padding: 10px;
   border: none;
+  height: 2.2rem;
   border-radius: 5px;
-  font-size: 0.8em;
+  font-size: 14px;
   scale: 1.2;
   font-weight: 700;
   transition: 0.3s ;
@@ -935,6 +953,7 @@ body.active-modal {
     max-width: 100%; 
     margin-top: 20px; 
     min-height: 5rem;
+    
   }
 
   .calendar-container {

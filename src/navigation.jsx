@@ -52,7 +52,6 @@ export default function Navigation() {
                             aria-label="Go to Calendar"
                             onClick={closeSidebar}
                         >
-                            <i className="fa fa-calendar" aria-hidden="true"></i> 
                             Calendar
                         </NavLink>
                         <NavLink
@@ -61,7 +60,6 @@ export default function Navigation() {
                             aria-label="Go to User Notes"
                             onClick={closeSidebar}
                         >
-                            <i className="fa fa-sticky-note" aria-hidden="true"></i>
                             User Notes
                         </NavLink>
                     </nav>

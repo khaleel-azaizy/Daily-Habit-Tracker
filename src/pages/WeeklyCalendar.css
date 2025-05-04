@@ -6,25 +6,34 @@
     opacity: 1;
   }
 }
+
 .full-weekly-calendar .my-calendar{
-    width: 97%;
+    width: 98%;
     margin-left:2rem ;
+    border: none;
     gap: 0;
 }
-
+.full-weekly-calendar .calendar-header{
+    margin-bottom: 0;
+}
 .weekly-calendar {
     display: flex;
     flex-direction: row;
     gap: 10px;
     animation: animation 0.8s;
-   
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0.5rem;
+    border-radius: 1em;
+    backdrop-filter: blur(20px);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
   }
   .full-weekly-calendar{
     display: flex;
     flex-direction: column;
-    gap: 10px;
     width: 100%;
-   
+    height: 80vh;
+    
   }
  .weekly-today-number{
   text-align: center;
@@ -42,6 +51,7 @@
     flex-direction: column;
     width: 25px;
     margin-top: 45px;
+    height: 151rem;
     text-align: right;
     font-size: 0.9rem;
     color: #000000;
@@ -53,29 +63,74 @@
     height: 100px;
 
   }
-  
+ 
+  .weekly-calendar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .weekly-calendar::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+    margin:5px;
+  }
+
+  .weekly-calendar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+
+  .weekly-calendar::-webkit-scrollbar-thumb:hover {
+    background: #555555c9;
+  }
   .week-grid {
     display: flex;
     flex: 1;
-  
+    height: 151rem;
   }
   .week-grid .event-item {
-    display: flex ;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    background-color: #97979770;
+    flex-wrap: wrap;
     height: 100%;
     font-weight: 500;
     font-size: 1rem;
-    margin: 0;
     border-radius: 0.5em;
     width: 90%;
-    position: relative;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);  
+    z-index: 1;
+    
   }
-  
-  
+  .week-grid .event-item::before {
+    content: '';
+    display: block;
+    width: 10000px;
+    height: 1px;
+    background-color: transparent;
+    border-top: #000000 1px dashed;
+    position: absolute;
+    top: 0;
+    opacity: 0.2;
+    z-index: -1;
+  }
+  .week-grid .event-item::after {
+    content: '';
+    display: block;
+    width: 10000px;
+    height: 1px;
+    opacity: 0.2;
+    background-color: transparent;
+    border-bottom: #000000 1px dashed;
+    position: absolute;
+    bottom: 0;
+    z-index: -1;
+  }
+  .event-item h4{
+    word-wrap: break-word; 
+    white-space: pre-wrap;
+    width: 100%; 
+    overflow-wrap: break-word; 
+  }
   .day-column {
     flex: 1;
     display: grid;
@@ -137,22 +192,22 @@
   .full-weekly-calendar .weekly-calendar .delete-button{
     background: transparent;
     border: none;
+    padding: 0.1em 0.5em;
+    border-radius: 1em;
     color: #000000;
     position: relative;
+    right: 0.2em;
+    margin-left: 0.5em;
     font-size: 1rem;
-    margin-top: 0.5rem;
     font-weight: 700;
-    transition: 0.3s ease-in-out;
+    transition: 0.3s;
   } 
-  .delete-button:hover{
-    color: rgb(255, 0, 0);
-    scale: 1.1;
-  }
+ 
  
   @media  (max-width: 1114px) {
     .full-weekly-calendar{
       width: 100%;
-      display: block;
+      
     }
     
     
