@@ -162,7 +162,6 @@ button {
   position: relative;
   animation: img_animation 1s ease-in-out;
   max-width: 30rem;
-  max-height: 40vh;
   display: block;
   justify-content: center;
   margin: 28vh auto ;
