@@ -33,6 +33,21 @@ export default function UserNotes() {
       });
   };
 
+  useEffect(() => {
+    fetch(`http://localhost:4000/get-notes/${storedUserId}`, {
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const sortedNotes = data;
+        setNotes(sortedNotes);
+        setDescription("");
+      })
+      .catch((error) => {
+        console.error("Error fetching notes:", error);
+      });
+  }, [title]);
+
   const handleDelete = (noteId) => {
     fetch(`http://localhost:4000/delete-note/${storedUserId}/${noteId}`, {
       method: "DELETE",
@@ -62,6 +77,7 @@ export default function UserNotes() {
       ];
       setNotes(updatedNotes);
     }
+   
   };
 
   const handleMoveDown = (index) => {
@@ -73,22 +89,33 @@ export default function UserNotes() {
       ];
       setNotes(updatedNotes);
     }
+    
+  };
+  const updateNotesOrder = (updatedNotes) =>{
+    if(!updatedNotes) return;
+    fetch(`http://localhost:4000/update-notes/${storedUserId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(updatedNotes),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          console.error("Failed to update notes order");
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating notes order:", error);
+      });
   };
 
   useEffect(() => {
-    fetch(`http://localhost:4000/get-notes/${storedUserId}`, {
-      credentials: "include",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const sortedNotes = data;
-        setNotes(sortedNotes);
-        setDescription("");
-      })
-      .catch((error) => {
-        console.error("Error fetching notes:", error);
-      });
-  }, [title]);
+    if(notes.length===0) return;
+      updateNotesOrder(notes);
+  }, [notes]);
+  
 
   return (
     <div className="user-tasks">

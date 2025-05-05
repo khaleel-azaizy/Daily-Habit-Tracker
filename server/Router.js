@@ -235,6 +235,7 @@ app.post('/login', (req, res) => {
         res.status(500).send({ error: 'Failed to add notes' });
       }
     });
+
     app.delete('/delete-note/:userid/:noteid',auth, async (req, res) => {
       try {
         const userId = req.params.userid;
@@ -263,6 +264,30 @@ app.post('/login', (req, res) => {
       }
     });
 
+    app.put('/update-notes/:userid', auth, async (req, res) => {
+      try {
+        const userId = req.params.userid;
+        const updatedOrder = req.body;
+
+        if (!updatedOrder.every(note => note.noteId && note.description)) {
+          return res.status(400).send({ error: 'Invalid data format. Each note must have noteId and description.' });
+        }
+
+        if (!Array.isArray(updatedOrder)) {
+          return res.status(400).send({ error: 'Invalid data format. Expected an array of notes.' });
+        }
+
+        const result = await db.collection('Users').updateOne(
+          { _id: new ObjectId(userId) },
+          { $set: { notes: updatedOrder } }
+        );
+
+        res.status(200).send({ message: 'Notes order updated successfully' });
+      } catch (error) {
+        console.error('Error updating notes order:', error);
+        res.status(500).send({ error: 'Failed to update notes order', details: error.message });
+      }
+    });
 
     app.post('/logout', async (req, res) => {
       const { token } = req.cookies;

@@ -2,7 +2,7 @@ import './WeeklyCalendar.css';
 import React, { useState, useEffect } from 'react';
 import { Event } from './Calendar';
 
-const WeeklyCalendar = ({ currentDay, year, month, events, addNewEvent, deleteEvent }) => {
+const WeeklyCalendar = ({ currentDay, year, month, events, addNewEvent, deleteEvent,editEvent }) => {
   const [weekDays, setWeekDays] = useState([]);
 
   useEffect(() => {
@@ -102,6 +102,7 @@ const WeeklyCalendar = ({ currentDay, year, month, events, addNewEvent, deleteEv
                     addNewEvent={addNewEvent}
                     startTime={event.startTime}
                     endTime={event.endTime}
+                    editEvent={editEvent}
                   />
                 </div>
               ))}

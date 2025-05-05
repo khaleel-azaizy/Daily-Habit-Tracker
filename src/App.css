@@ -21,6 +21,10 @@ body {
   margin: 0;
   
 }
+html{
+  scrollbar-width: none;
+}
+
 button {
   cursor: pointer;
   
@@ -690,7 +694,7 @@ body.active-modal {
 }
 .event-item {
   transition: 0.3s;
-  display: flex;
+  display: block;
   text-align: center;
   justify-content: center;
   align-items: center;
@@ -775,6 +779,7 @@ body.active-modal {
   transition: all 0.5s ;
   position: absolute;
 }
+
 
 .yearly-calendar .yearly-calendar-header{
   text-align: center;
