@@ -1,0 +1,141 @@
+.voise-assistant-button {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50%;
+    border: none;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.5s ease; 
+    
+}
+
+.voise-assistant-button:hover {
+    box-shadow: 0 0 12px 3px rgba(107, 107, 107, 0.6);
+}
+
+#additional-stars{
+    transition: 0.3s ease-in-out;
+     transform-origin: 50% 50%;
+}
+
+.voise-assistant-button:hover #additional-stars {
+    transform:  rotate(45deg);
+    filter: brightness(10) drop-shadow(0 0 20px #dadada);
+}
+
+
+.voise-assistant-button.listening #additional-stars {
+    animation: rotate-stars 2s linear infinite;
+}
+
+.voise-assistant-button.listening {
+    box-shadow: 0 0 12px 3px rgba(86, 86, 86, 0.6);
+}
+
+.voise-assistant-button.listening #center-star{
+    transform-origin: 50% 50%;
+    scale: 1.2;
+}
+#circle-body {
+    background-color: transparent;
+}
+
+.feedback-message{
+ animation: fadeIn 0.5s ease-in-out;
+   
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes rotate-stars {
+    0% {
+        transform: translate(0%, 0%) rotate(0deg);
+        filter: brightness(10)
+    }
+    25% {
+        transform: translate(-3%, -3%) rotate(90deg);
+        filter: brightness(10)
+    }
+    50% {
+        transform: translate(-5%, -5%) rotate(180deg);
+        filter: brightness(10)
+    }
+    100% {
+        transform: translate(0%, 0%) rotate(360deg);
+        filter: brightness(10)
+    }
+}
+
+
+.voice-container {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1000;
+}
+.transcript-bubble {
+  background-color: #090909;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 10px;
+  max-width: 200px;
+  font-size: 14px;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+.transcript-bubble.listening {
+  background-color: #090909;
+  padding: 6px 10px;
+  border-radius: 10px;
+  max-width: 200px;
+  font-size: 14px;
+  position: relative;
+  overflow: hidden;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  animation: blur-breathe 1.5s ease-in-out infinite;
+}
+
+.transcript-bubble.listening::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  animation: scan 2s linear infinite;
+}
+
+@keyframes blur-breathe {
+  0%, 100% {
+    filter: blur(0px);
+    opacity: 1;
+  }
+  50% {
+    filter: blur(1px);
+    opacity: 0.8;
+  }
+}
+
+@keyframes scan {
+  0% {
+    left: -50%;
+  }
+  100% {
+    left: 100%;
+  }
+}

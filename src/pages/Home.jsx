@@ -2,6 +2,7 @@ import { useState,useEffect } from "react";
 import Calendar from "./Calendar";
 import YearlyCalendar from "./YearlyCalendar";
 import WeeklyCalendar from "./WeeklyCalendar";
+import VoiceAssistant from "./VoiceAssistant";
 
 export default function Home() {
   const [modal, setModal] = useState(false);
@@ -9,7 +10,6 @@ export default function Home() {
   const [events, setEvents] = useState([]);
   const [upcomingEvents,setUpcomingevents] = useState([]);
   const [oneTimeEvents,setOneTimeEvents] = useState([]);
-  const storedUserId = localStorage.getItem('userId');
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentDay, setCurrentDay] = useState(new Date().getDate());
@@ -38,7 +38,7 @@ export default function Home() {
   }, [modal]);
 
   const fetchUnpermanentEvents =() => {
-    fetch(`http://localhost:4000/get-one-time-events/${storedUserId}`,{credentials:'include'}) 
+    fetch(`http://localhost:4000/get-one-time-events`,{credentials:'include'}) 
       .then((response) => response.json())
       .then((data) => {
         const sortedEvents = data.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -51,7 +51,7 @@ export default function Home() {
   };
 
   const fetchEvents =() => {
-    fetch(`http://localhost:4000/get-events/${storedUserId}`,{credentials:'include'}) 
+    fetch(`http://localhost:4000/get-events`,{credentials:'include'}) 
       .then((response) => response.json())
       .then((data) => {
         const sortedEvents = data.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -92,7 +92,7 @@ export default function Home() {
   const handleEventRemove = (id) => {
     
      
-      fetch(`http://localhost:4000/delete-event/${storedUserId}/${id}`, {
+      fetch(`http://localhost:4000/delete-event/${id}`, {
         method: 'DELETE',
         headers: { "Content-Type": "application/json" },
         credentials: 'include',
@@ -118,7 +118,7 @@ export default function Home() {
     };
    
 
-    fetch(`http://localhost:4000/update-event/${storedUserId}/${id}`, {
+    fetch(`http://localhost:4000/update-event/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -245,7 +245,7 @@ export default function Home() {
       });
     }
 
-    fetch(`http://localhost:4000/add-event/${storedUserId}`, {
+    fetch(`http://localhost:4000/add-event`, {
       method: 'post',
       headers: { "Content-Type": "application/json" },
       credentials: 'include',
@@ -307,9 +307,95 @@ export default function Home() {
   const editEvent = (id) => {
    
   }
+
+  
+const deleteEventViaVoice = (command) => {
+  const { title, date } = command || {};
+  if (!title || !date) {
+    console.warn("deleteEventViaVoice: Missing title or date in command", command);
+    return;
+  }
+  const match = events.find((e) => e.title === title && e.date === date);
+
+  if (!match) {
+    console.warn("No matching event found for:", title, date);
+    return;
+  }
+
+  fetch(`http://localhost:4000/delete-event/${match.id}`, {
+    method: 'DELETE',
+    headers: { "Content-Type": "application/json" },
+    credentials: 'include',
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log(" Deleted event via voice:", title);
+        fetchEvents(); 
+      }
+    })
+    .catch((err) => {
+      console.error(" Failed to delete event via voice:", err);
+    });
+};
+const addEventViaVoice = (command) => {
+  const newEvents = [];
+
+  if (command.isPermanent) {
+  
+    const [startStr, endStr] = command.period.split('/');
+    const start = new Date(startStr);
+    const end = new Date(endStr);
+    let current = new Date(start);
+
+    while (current <= end) {
+      newEvents.push({
+        id: current.getTime().toString() + title,
+        title:command.title,
+        date: formatDate(current),
+        startTime: command.startTime ,
+        endTime: command.endTime ,
+        isPermanent: true,
+        every:command.every,
+        period: command.period,
+      });
+
+      
+      if (command.every === 'day') current.setDate(current.getDate() + 1);
+      else if (command.every === 'week') current.setDate(current.getDate() + 7);
+      else if (command.every === 'month') current.setMonth(current.getMonth() + 1);
+      else break; 
+    }
+  } else {
+    newEvents.push({
+      id: Date.now().toString() + command.title,
+      title: command.title,
+      date: command.date ,
+      startTime: command.startTime ,
+      endTime: command.endTime ,
+      isPermanent: false
+    });
+  }
+
+  fetch('http://localhost:4000/add-event', {
+    method: 'POST',
+    headers: { "Content-Type": "application/json" },
+    credentials: 'include',
+    body: JSON.stringify(newEvents)
+  })
+    .then((response) => {
+      if (response.ok) {
+        fetchEvents();
+      }
+    })
+    .catch((err) => {
+      console.error("Failed to add event via voice:", err);
+    });
+};
+
   return (
     <div className="home">
-      
+       <VoiceAssistant onAddEvent={addEventViaVoice} onDeleteEvent={deleteEventViaVoice} />
+        <>
       <div className="home-container">
       <header className="home-header"> 
         <button className={yearButton === true ? 'year-mounth-activebutton' : 'year-mounth-notavtive'} onClick={PresentFullYear}  aria-label="Yearly Calendar">
@@ -464,6 +550,7 @@ export default function Home() {
           </form>
         </div>
       )}
+      </>
     </div>
   )
 }

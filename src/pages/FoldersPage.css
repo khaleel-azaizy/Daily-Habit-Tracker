@@ -1,0 +1,271 @@
+:root {
+  --folders-bg: #f3f3f336;
+  --folders-border: #96969683;
+  --folders-shadow: #e0e0e0;
+  --folders-title: #222;
+  --folders-card-title: #444;
+  --folders-note-bg: #23272f;
+  --folders-note-border: #23272f;
+  --folders-note-shadow: #d3d3d3;
+  --folders-note-text: #fff;
+  --folders-note-delete-border: #fff;
+  --folders-note-delete-hover: #6ee487;
+  --folders-no-notes: #aaa;
+  --folders-delete-btn-bg: #fff0f0;
+  --folders-delete-btn-border: #ff3b3b;
+  --folders-delete-btn-color: #c00;
+  --folders-delete-btn-anim: #ffd6d6;
+  --folders-form-bg: #f6f6f6;
+  --folders-form-shadow: #e0e0e0;
+  --folders-form-btn-bg: #232a32;
+  --folders-form-btn-hover: #444b54;
+  --folders-form-btn-color: #fff;
+}
+
+
+.folders-root {
+  padding: 20px;
+  justify-content: center;
+}
+
+.folders-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 18px;
+  color: var(--folders-title);
+}
+
+.folders-form-modern{
+  justify-self: center;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 28px;
+  background: var(--folders-form-bg);
+  border-radius: 12px;
+  box-shadow: 0 1px 6px var(--folders-form-shadow);
+  padding: 4px 6px 4px 12px;
+  max-width: 420px;
+}
+
+.folders-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.folder-card {
+  border: 1px solid var(--folders-border);
+  border-radius: 16px;
+  background: var(--folders-bg);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px var(--folders-shadow);
+  min-height: 220px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px;
+  position: relative;
+  transition: 0.2s;
+  animation: img_animation 0.5s ease-in-out;
+}
+
+.folder-link {
+  text-decoration: none;
+  color: #333;
+  width: 100%;
+}
+
+.folder-name {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center;
+  color: var(--folders-card-title);
+}
+
+.folder-notes-preview {
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 4px;
+}
+
+.folder-note-preview {
+  background: var(--folders-note-bg);
+  border: 1.5px solid var(--folders-note-border);
+  border-radius: 10px;
+  padding: 8px 0;
+  margin-bottom: 10px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--folders-note-text);
+  box-shadow: 0 2px 8px var(--folders-note-shadow);
+  min-height: 38px;
+  position: relative;
+  transition: 0.2s;
+}
+
+.folder-note-text {
+  flex: 1;
+  color: var(--folders-note-text);
+  font-weight: 500;
+  margin-left:8px ;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.folder-note-delete {
+  display: flex;
+  background: transparent;
+  border: none;
+  margin: 0;
+  cursor: pointer;
+  transition:0.5s;
+}
+.check-rect, .checkmark{
+  transition:0.3s;
+}
+.folder-note-delete:hover .check-rect , .folder-note-delete:hover .checkmark{
+  stroke: var(--folders-note-delete-hover);
+
+}
+
+.folder-no-notes {
+  color: var(--folders-no-notes);
+  font-style: italic;
+  text-align: center;
+  margin-top: 12px;
+}
+
+.folder-delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.folder-delete-btn:hover {
+  transform: scale(1.1);
+}
+
+
+.folders-form-modern-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 17px;
+  padding: 12px 8px;
+  border-radius: 8px;
+  color: #232a32;
+}
+
+.folders-form-modern-input::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+.folders-form-modern-btn {
+  background: var(--folders-form-btn-bg);
+  border: none;
+  border-radius: 8px;
+  color: var(--folders-form-btn-color);
+  padding: 8px 16px;
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 1px 4px var(--folders-form-shadow);
+  transition: box-shadow 0.18s, transform 0.12s;
+}
+
+.folders-form-modern-btn:hover, .folders-form-modern-btn:focus {
+  background: var(--folders-form-btn-hover);
+  transform: scale(1.07);
+}
+
+.folders-form-modern-btn svg {
+  display: block;
+}
+
+.done-note-preview {
+  background: #23272f;
+  border: 1.5px solid #23272f;
+  border-radius: 10px;
+  padding: 8px 16px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  box-shadow: 0 2px 8px #d3d3d3;
+  min-height: 38px;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+
+.done-note-text {
+  flex: 1;
+  color: #fff;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.done-note-delete {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  margin-left: 12px;
+  cursor: pointer;
+  padding: 0;
+  transition: 0.15s;
+  position: relative;
+  z-index: 1;
+}
+
+
+
+
+
+.done-note-delete .checkmark {
+  stroke-dasharray: 16;
+  stroke-dashoffset: 16;
+  transition: stroke-dashoffset 0.3s cubic-bezier(0.4,1.4,0.6,1);
+}
+
+.done-note-delete:hover .checkmark {
+  stroke-dashoffset: 0;
+}
+@keyframes img_animation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

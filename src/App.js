@@ -9,7 +9,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import './App.css'
 import Register from "./pages/Register"
-
+import FoldersPage from "./pages/FoldersPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,7 +21,8 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />  
    
     <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />  
-    <Route path="/user-notes" element={<ProtectedRoute><UserNotes /></ProtectedRoute>}/>
+    <Route path="/notes" element={<ProtectedRoute><FoldersPage /></ProtectedRoute>}/>
+     <Route path="folders/:folderId" element={<ProtectedRoute><UserNotes /></ProtectedRoute>} />
     </Route>
     
   </>

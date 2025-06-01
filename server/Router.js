@@ -8,6 +8,8 @@ const cookieParser = require('cookie-parser');
 const { ObjectId } = require('mongodb');
 const e = require('express');
 const auth = require('./auth');
+const  OpenAI  = require('openai');
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY ,organization:'org-Nrvvl1fbAFfASGmiNmOHyE89',project: 'proj_AvLOquTF2pdWCTewpbcv8nwa'});
 
 
 const app = express()
@@ -44,11 +46,18 @@ app.post('/login', (req, res) => {
       db.collection('UserTokens').updateOne({userId: new ObjectId(id)} , { $push: { tokens: token } })
       console.log(token);
 
-      res.cookie('token', token, {
-        httpOnly: true,       
-        secure: false,        
-        sameSite: 'strict',   
-        maxAge: 24 * 60 * 60 * 1000, 
+        res.cookie('token', token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+
+      res.cookie('userid', id.toString(), {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000,
       });
 
      
@@ -110,33 +119,34 @@ app.post('/login', (req, res) => {
       } catch (error) {}
     });
 
-    app.post('/add-event/:userId',auth,async (req, res) => {
+     
+    app.post('/add-event', auth, async (req, res) => {
       try {
-        
-        const userId = req.params.userId;
+        const { userid } = req.cookies;
         const eventData = req.body;
         console.log('Received event data:', eventData);
-       
-          for(let i=0;i<eventData.length;i++){
+
+        for (let i = 0; i < eventData.length; i++) {
           await db.collection('Users').updateOne(
-            { _id: new ObjectId(userId) },
+            { _id: new ObjectId(userid) },
             { $push: { events: { eventId: new ObjectId(), ...eventData[i] } } }
           );
         }
-       
-    
+
         res.status(200).send({ message: 'Event added successfully' });
       } catch (error) {
         console.error('Error adding event:', error);
-        res.status(500).send({ error: 'Failed to add event' });get-one-time-events
+        res.status(500).send({ error: 'Failed to add event' });
       }
     });
 
-    app.get('/get-one-time-events/:userid', auth, async (req, res) => {
+    app.get('/get-one-time-events', auth, async (req, res) => {
       try {
-       
-        const userId = req.params.userid;
-        const user = await db.collection('Users').findOne({ _id: new ObjectId(userId) });
+        const { userid } = req.cookies;
+        if (!userid) {
+          return res.status(400).json({ error: 'User ID not found in cookies' });
+        }
+        const user = await db.collection('Users').findOne({ _id: new ObjectId(userid) });
         if (user && user.events) {
           const oneTimeEvents = user.events.filter(event => event.isPermanent === false);
           res.status(200).json(oneTimeEvents);
@@ -149,59 +159,68 @@ app.post('/login', (req, res) => {
       }
     });
   
-    app.get('/get-events/:userid',auth, async (req, res) => {
+    app.get('/get-events', auth, async (req, res) => {
       try {
-        const userId = req.params.userid;
-        const user = await db.collection('Users').findOne( { _id: new ObjectId(userId)  });
-        res.status(200).json(user.events); 
+        const { userid } = req.cookies;
+        if (!userid) {
+          return res.status(400).json({ error: 'User ID not found in cookies' });
+        }
+        const user = await db.collection('Users').findOne({ _id: new ObjectId(userid) });
+        res.status(200).json(user.events);
       } catch (error) {
         console.error('Error fetching events:', error);
         res.status(500).json({ error: 'Failed to fetch events' });
       }
     });
 
-    app.delete('/delete-event/:userid/:id',auth, (req, res) => {
-      
-      const userId = req.params.userid;
-      const eventId = req.params.id;
-      
-      db.collection('Users').updateOne({ _id: new ObjectId(userId) },
-       { $pull: { events: { id: eventId } } })
-        .then(() => {
-          res.status(200).send({ message: 'Event deleted successfully' });
-        })
-        .catch((err) => {
-          res.status(500).send({ error: 'Failed to delete event', details: err });
-        });
+    app.delete('/delete-event/:id', auth, async (req, res) => {
+      try {
+        const { userid } = req.cookies;
+        const eventId = req.params.id;
+
+        if (!userid) {
+          return res.status(400).json({ error: 'User ID not found in cookies' });
+        }
+
+        const result = await db.collection('Users').updateOne(
+          { _id: new ObjectId(userid) },
+          { $pull: { events: { id: eventId } } }
+        );
+
+        if (result.modifiedCount === 0) {
+          return res.status(404).send({ error: 'Event not found' });
+        }
+
+        res.status(200).send({ message: 'Event deleted successfully' });
+      } catch (err) {
+        res.status(500).send({ error: 'Failed to delete event', details: err });
+      }
     });
 
-    app.put('/update-event/:userid/:id',auth, async (req, res) => {
+    app.put('/update-event/:id', auth, async (req, res) => {
       try {
         const eventId = req.params.id;
-        const userId = req.params.userid;
+        const { userid } = req.cookies;
         const updatedData = req.body;
-        
-        console.log('Received updated data:',updatedData)
-        if ( !updatedData.date) {
+
+        console.log('Received updated data:', updatedData);
+        if (!updatedData.date) {
           return res.status(400).send({ error: 'Missing required fields' });
         }
-        
+
         const result = await db.collection('Users').updateOne(
-          { _id: new ObjectId(userId), "events.id": eventId },
-          { 
+          { _id: new ObjectId(userid), "events.id": eventId },
+          {
             $set: {
-              
               "events.$.date": updatedData.date,
-              
-            } 
+            }
           }
         );
-        
 
         if (result.modifiedCount === 0) {
           return res.status(404).send({ error: 'Event not found' });
         }
-    
+
         res.status(200).send({ message: 'Event updated successfully' });
       } catch (error) {
         console.error('Error updating event:', error);
@@ -209,85 +228,197 @@ app.post('/login', (req, res) => {
       }
     });
 
-    app.get('/get-notes/:userid',auth, async (req, res) => {
-      try {
-        const userId = req.params.userid;
-        const user = await db.collection('Users').findOne( { _id: new ObjectId(userId)  });
-        res.status(200).json(user.notes); 
-      } catch (error) {
-        console.error('Error fetching notes:', error);
-        res.status(500).json({ error: 'Failed to fetch notes' });
-      }
-    });
-
-    app.post('/add-note/:userId',auth, async (req, res) => {
-      try {
-        const userId = req.params.userId;
-        const noteData = req.body; 
-        await db.collection('Users').updateOne(
-          { _id: new ObjectId(userId) },
-          { $push: { notes: { noteId: noteData.noteId, description: noteData.description } } }
-        );
     
-        res.status(200).send({ message: 'note added successfully' });
-      } catch (error) {
-        console.error('Error adding notes:', error);
-        res.status(500).send({ error: 'Failed to add notes' });
-      }
-    });
 
-    app.delete('/delete-note/:userid/:noteid',auth, async (req, res) => {
-      try {
-        const userId = req.params.userid;
-        const noteId = req.params.noteid;
-        
-        console.log('Received updated data:',noteId)
-      
-        const result = await db.collection('Users').updateOne(
-          { _id: new ObjectId(userId)},
-          { 
-            $pull: {
-            notes: {noteId: noteId}
-            } 
-          }
-        );
-        
+app.get('/get-folders', auth, async (req, res) => {
+  try {
+    const { userid } = req.cookies;
+    if (!userid) return res.status(400).json({ error: 'User not authenticated' });
 
-        if (result.modifiedCount === 0) {
-          return res.status(404).send({ error: 'Event not found' });
-        }
-    
-        res.status(200).send({ message: 'Event updated successfully' });
-      } catch (error) {
-        console.error('Error updating event:', error);
-        res.status(500).send({ error: 'Failed to update event', details: error.message });
-      }
-    });
+    const user = await db
+      .collection('Users')
+      .findOne(
+        { _id: new ObjectId(userid) },
+        { projection: { folders: 1 } }
+      );
 
-    app.put('/update-notes/:userid', auth, async (req, res) => {
-      try {
-        const userId = req.params.userid;
-        const updatedOrder = req.body;
+    res.json(Array.isArray(user?.folders) ? user.folders : []);
+  } catch (err) {
+    console.error('Error fetching folders:', err);
+    res.status(500).json({ error: 'Could not fetch folders' });
+  }
+});
 
-        if (!updatedOrder.every(note => note.noteId && note.description)) {
-          return res.status(400).send({ error: 'Invalid data format. Each note must have noteId and description.' });
-        }
 
-        if (!Array.isArray(updatedOrder)) {
-          return res.status(400).send({ error: 'Invalid data format. Expected an array of notes.' });
-        }
+app.post('/add-folder', auth, async (req, res) => {
+  try {
+    const { userid } = req.cookies;
+    const { name } = req.body;
+    if (!userid) return res.status(400).json({ error: 'User not authenticated' });
+    if (!name || typeof name !== 'string') {
+      return res.status(400).json({ error: 'Folder name is required' });
+    }
 
-        const result = await db.collection('Users').updateOne(
-          { _id: new ObjectId(userId) },
-          { $set: { notes: updatedOrder } }
-        );
+    const newFolder = {
+      folderId: new ObjectId().toString(),
+      name: name.trim(),
+      createdAt: new Date(),
+      notes: []           
+    };
 
-        res.status(200).send({ message: 'Notes order updated successfully' });
-      } catch (error) {
-        console.error('Error updating notes order:', error);
-        res.status(500).send({ error: 'Failed to update notes order', details: error.message });
-      }
-    });
+    await db.collection('Users').updateOne(
+      { _id: new ObjectId(userid) },
+      { $push: { folders: newFolder } }
+    );
+
+    res.status(201).json(newFolder);
+  } catch (err) {
+    console.error('Error creating folder:', err);
+    res.status(500).json({ error: 'Could not create folder' });
+  }
+});
+
+app.delete('/folders/:folderId', auth, async (req, res) => {
+  try {
+    const { userid } = req.cookies;
+    const { folderId } = req.params;
+    if (!userid) return res.status(400).json({ error: 'User not authenticated' });
+
+    const result = await db.collection('Users').updateOne(
+      { _id: new ObjectId(userid) },
+      { $pull: { folders: { folderId } } }
+    );
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: 'Folder not found' });
+    }
+    res.sendStatus(204);
+  } catch (err) {
+    console.error('Error deleting folder:', err);
+    res.status(500).json({ error: 'Could not delete folder' });
+  }
+});
+
+
+
+app.get('/folders/:folderId/notes', auth, async (req, res) => {
+  try {
+    const { userid } = req.cookies;
+    const { folderId } = req.params;
+    if (!userid) return res.status(400).json({ error: 'User not authenticated' });
+
+    const user = await db
+      .collection('Users')
+      .findOne(
+        { _id: new ObjectId(userid), 'folders.folderId': folderId },
+        { projection: { 'folders.$': 1 } }
+      );
+
+    const notes = user?.folders?.[0]?.notes;
+    res.json(Array.isArray(notes) ? notes : []);
+  } catch (err) {
+    console.error('Error fetching notes for folder:', err);
+    res.status(500).json({ error: 'Could not fetch notes' });
+  }
+});
+
+app.post('/folders/addnote/:folderId', auth, async (req, res) => {
+  try {
+  const { userid } = req.cookies;
+  const { folderId } = req.params;
+  const { noteId, description } = req.body;
+  if (!userid) return res.status(400).json({ error: 'User not authenticated' });
+  if (!noteId || !description) {
+    return res.status(400).json({ error: 'noteId and description required' });
+  }
+
+  const newNote = {
+    noteId,
+    description,
+    createdAt: new Date(),
+  };
+
+  await db.collection('Users').updateOne(
+    { _id: new ObjectId(userid), 'folders.folderId': folderId },
+    { $push: { 'folders.$.notes': newNote } }
+  );
+
+  res.status(201).json(newNote);
+  } catch (err) {
+    console.error('Error adding note to folder:', err);
+    res.status(500).json({ error: 'Could not add note' });
+  }
+});
+
+app.delete('/folders/:folderId/notes/:noteId', auth, async (req, res) => {
+  try {
+    const { userid } = req.cookies;
+    const { folderId, noteId } = req.params;
+    if (!userid) return res.status(400).json({ error: 'User not authenticated' });
+
+    const result = await db.collection('Users').updateOne(
+      { _id: new ObjectId(userid), 'folders.folderId': folderId },
+      { $pull: { 'folders.$.notes': { noteId } } }
+    );
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: 'Note or folder not found' });
+    }
+
+    res.json({ message: 'Note deleted' });
+  } catch (err) {
+    console.error('Error deleting note:', err);
+    res.status(500).json({ error: 'Could not delete note' });
+  }
+});
+
+app.put('/folders/:folderId/notes', auth, async (req, res) => {
+  try {
+    const { userid } = req.cookies;
+    const { folderId } = req.params;
+    const updatedNotes = req.body;
+    console.log('PUT /folders/:folderId/notes', { userid, folderId, updatedNotes });
+    if (!userid) return res.status(401).json({ error: 'Not authenticated' });
+    if (!Array.isArray(updatedNotes)) return res.status(400).json({ error: 'Invalid notes data' });
+
+    const user = await db.collection('Users').findOne({ _id: new ObjectId(userid), 'folders.folderId': folderId.toString() });
+    if (!user) {
+      console.error('Folder not found for user', { userid, folderId });
+      return res.status(404).json({ error: 'Folder not found for user' });
+    }
+
+    const result = await db.collection('Users').updateOne(
+      { _id: new ObjectId(userid), 'folders.folderId': folderId.toString() },
+      { $set: { 'folders.$.notes': updatedNotes } }
+    );
+    res.json({ message: 'Notes reordered' });
+  } catch (err) {
+    console.error('Error updating notes order:', err);
+    res.status(500).json({ error: 'Could not update notes' });
+  }
+});
+
+
+app.put('/folders/:folderId/notes/:noteId', auth, async (req, res) => {
+  try {
+    const { userid } = req.cookies;
+    const { folderId, noteId } = req.params;
+    const { description } = req.body;
+    if (!userid) return res.status(400).json({ error: 'User not authenticated' });
+    if (!description) return res.status(400).json({ error: 'Description required' });
+
+    const result = await db.collection('Users').updateOne(
+      { _id: new ObjectId(userid), 'folders.folderId': folderId, 'folders.notes.noteId': noteId },
+      { $set: { 'folders.$[folder].notes.$[note].description': description } },
+      { arrayFilters: [{ 'folder.folderId': folderId }, { 'note.noteId': noteId }] }
+    );
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: 'Note or folder not found' });
+    }
+    res.json({ message: 'Note updated' });
+  } catch (err) {
+    console.error('Error updating note:', err);
+    res.status(500).json({ error: 'Could not update note' });
+  }
+});
 
     app.post('/logout', async (req, res) => {
       const { token } = req.cookies;
@@ -312,3 +443,73 @@ app.post('/login', (req, res) => {
    
   });
  
+
+  app.post('/api/parse-command', async (req, res) => {
+  const { transcript } = req.body;
+
+    const prompt = `
+    You are an assistant that extracts structured JSON commands from user input for a calendar and notes application.
+    Supported intents:
+      - "add_event": Add a new event. Required fields: "title", "date", "startTime", "endTime", "isPermanent" (boolean). If "isPermanent" is true, include "every" ("week"|"month"|"year") and "period" ("startDate/endDate").
+      - "delete_event": Delete an event. Required field: "title" and "date".
+      - "add_folder": Add a new folder. Required field: "name".
+      - "delete_folder": Delete a folder. Required field: "name".
+      - "add_note": Add a note to a folder. Required fields: "folderName", "description".
+      - "delete_note": Delete a note from a folder. Required fields: "folderName", "description" or "noteId".
+      - "go_to_notes": Navigate to notes section.
+      - "go_to_home": Navigate to home section.
+      - "unkown": The Request is not valid.
+
+    Return the result as a single JSON object. Example formats:
+    {
+      "intent": "add_event",
+      "title": "Math exam",
+      "date": "2025-06-10",
+      "startTime": "10:00",
+      "endTime": "12:00",
+      "isPermanent": false
+    }
+    {
+      "intent": "add_event",
+      "title": "Math exam",
+      "date": "2025-06-10",
+      "startTime": "10:00",
+      "endTime": "12:00",
+      "isPermanent": true,
+      "every": "week",
+      "period": "2025-06-10/2025-07-10"
+    }
+    {
+      "intent": "add_folder",
+      "name": "Physics Notes"
+    }
+    {
+      "intent": "add_note",
+      "folderName": "Physics Notes",
+      "description": "Newton's laws summary"
+    }
+    `;
+
+  try {
+   const completion = await openai.chat.completions.create({
+   model: "gpt-4",
+   messages: [
+    {
+      role: "system",
+      content: prompt,
+    },
+    {
+      role: "user",
+      content:transcript,
+    },
+  ],
+  }); 
+  const raw = completion.choices[0].message.content;
+  const data = JSON.parse(raw); 
+    console.log("Parsed:", data);
+    res.json(data);
+    } catch (error) {
+      console.error("AI parse error:", error); 
+      res.status(500).json({ error: 'Failed to parse command' });
+    }
+  });

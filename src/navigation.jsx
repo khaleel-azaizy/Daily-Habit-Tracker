@@ -54,14 +54,10 @@ export default function Navigation() {
                         >
                             Calendar
                         </NavLink>
-                        <NavLink
-                            to="/user-notes"
-                            className="nav-link"
-                            aria-label="Go to User Notes"
-                            onClick={closeSidebar}
-                        >
-                            User Notes
-                        </NavLink>
+                         
+                        <NavLink to="/notes" onClick={closeSidebar}>Notes</NavLink>
+
+                        
                     </nav>
                     <button
                         className="logout"
